@@ -72,7 +72,7 @@ html {
 }
 
 .ikon-besar {
-	font-size: 60px;
+	font-size: 50px;
 	color: #303F9F;
 }
 
@@ -84,9 +84,9 @@ html {
 	font-size: 24px;
 	text-align: center;
 	font-weight: bold;
-	line-height: 80px;
-	height: 80px;
-	width: 80px;
+	line-height: 60px;
+	height: 60px;
+	width: 60px;
 	color: white;
 	background-color: #303F9F;
 	border-radius: 100%;
@@ -365,6 +365,23 @@ html {
 /* desktop */
 
 @media (min-width: 992px) {
+
+	.lingkar {
+		font-size: 24px;
+		text-align: center;
+		font-weight: bold;
+		line-height: 80px;
+		height: 80px;
+		width: 80px;
+		color: white;
+		background-color: #303F9F;
+		border-radius: 100%;
+	}
+
+	.ikon-besar {
+		font-size: 60px;
+		color: #303F9F;
+	}
 
 	/* nav */
 	#header {

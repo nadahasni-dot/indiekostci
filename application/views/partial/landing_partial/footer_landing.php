@@ -9,7 +9,7 @@
   					relationship (CRM)
   					untuk kos-kosan berbasis cloud (internet) sehingga memudahkan anda dalam mengelola bisnis.
   					Dirancang simpel
-  					untuk orang awam, sehingga mudah digunakan, semudah menggunakan handphone. Saat ini Halokos juga
+  					untuk orang awam, sehingga mudah digunakan, semudah menggunakan handphone. Saat ini Indiekost juga
   					sebagai
   					operator kos-kosan. Kami membantu klien yang ingin bisnis kos-kosan tapi tidak memiliki waktu dan
   					keahlian

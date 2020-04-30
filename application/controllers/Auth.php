@@ -13,6 +13,8 @@ class Auth extends CI_Controller {
 
     // main function
     public function index(){
+        $this->_verifyAccess();
+
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
 
@@ -51,12 +53,22 @@ class Auth extends CI_Controller {
                 if(password_verify($password, $userData['password'])){      
                     $data = [     
                         'id_pengguna' => $userData['id_pengguna'],
-                        'email' => $userData['email'],
+                        'email' => $userData['email_pengguna'],
                         'id_akses' => $userData['id_akses']
-                    ];
+                    ];                    
 
                     $this->session->set_userdata($data);
-                    redirect('user');
+
+                    $level = $this->session->userdata('id_akses');
+
+                    if( $level == 1){
+                        redirect('admin');
+                    } else if ( $level == 2) {
+                        redirect('user');
+                    } else {
+                        redirect('candidate');
+                    }
+                    
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                     Password salah!</div>');
@@ -80,6 +92,8 @@ class Auth extends CI_Controller {
 
     // function register
     public function register(){
+        $this->_verifyAccess();
+
         $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
         
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[pengguna.email_pengguna]', [
@@ -234,6 +248,7 @@ class Auth extends CI_Controller {
     
     // function forget password
     public function forgotPassword(){
+        $this->_verifyAccess();
 
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');        
 
@@ -370,5 +385,20 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
         Anda berhasil logout</div>');
         redirect('auth');
+    }
+
+    private function _verifyAccess(){
+        $level = $this->session->userdata('id_akses');
+
+        if($level == 1){
+            redirect('admin');
+            return false;
+        } else if ($level == 2){
+            redirect('user');
+            return false;
+        } else if ($level == 3){
+            redirect('user');
+            return false;
+        }
     }
 }
