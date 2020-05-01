@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Apr 2020 pada 10.29
+-- Waktu pembuatan: 01 Bulan Mei 2020 pada 10.13
 -- Versi server: 10.1.40-MariaDB
 -- Versi PHP: 7.3.5
 
@@ -149,28 +149,29 @@ CREATE TABLE `kamar` (
   `harga_bulanan` double NOT NULL,
   `harga_tahunan` double NOT NULL,
   `denda` double NOT NULL,
-  `foto_kamar` varchar(255) NOT NULL
+  `foto_kamar` varchar(255) NOT NULL,
+  `is_used` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `kamar`
 --
 
-INSERT INTO `kamar` (`id_kamar`, `nomor_kamar`, `id_tipe`, `luas_kamar`, `lantai_kamar`, `kapasitas_kamar`, `deskripsi_kamar`, `id_layanan`, `harga_harian`, `harga_mingguan`, `harga_bulanan`, `harga_tahunan`, `denda`, `foto_kamar`) VALUES
-(3, 111, 2, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 80000, 300000, 360000, 5000, '5e166d07c1269.jpg'),
-(4, 101, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 70000, 300000, 1200000, 5000, '5e166d1d291b0.jpg'),
-(5, 102, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 65000, 300000, 330000, 5000, '5e166d28510e6.jpg'),
-(6, 103, 1, '4x4', '1', 1, 'Kamar Mandi Dalam, Satu tempat tidur, satu lemari, satu meja, 2 kursi', 2, 10000, 65000, 300000, 330000, 5000, '5e166d36598d9.jpg'),
-(7, 104, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 65000, 300000, 330000, 5000, '5e166d4179726.jpeg'),
-(8, 105, 1, '4x4', '1', 1, 'asdasdasdasdsad', 1, 0, 0, 300000, 0, 5000, '5e192d0d9e4d6.jpg'),
-(9, 106, 1, '4x4', '1', 1, 'asdadasdadasadds', 2, 0, 0, 400000, 0, 5000, '5e1a901df0b7d.jpeg'),
-(10, 110, 1, '4x4', '1', 1, 'aswdasds', 2, 0, 0, 300000, 0, 5000, '5e26fc65676a8.jpg'),
-(11, 112, 1, '4x4', '1', 1, 'qwewqeqwe', 2, 0, 0, 300000, 0, 5000, '5e26fdb5ef3dc.jpg'),
-(12, 113, 1, '4x4', '1', 1, 'deqdqdqwdwqdqwd', 2, 0, 0, 300000, 0, 5000, '5e26fdcfb8da5.jpeg'),
-(13, 114, 1, '4x4', '1', 1, 'sdqweqweqweqweqwghtjy', 2, 0, 0, 300000, 0, 5000, '5e26fdf2979ee.jpg'),
-(14, 107, 1, '4x4', '1', 1, 'fegopjf ewiqdjhpw ewjp', 2, 0, 0, 400000, 0, 5000, '5e2791b9e2671.jpeg'),
-(15, 108, 1, '4x4', '1', 1, 'wqwq weq qwefdaa qw', 2, 0, 0, 400000, 0, 5000, '5e2791d2e2c12.jpg'),
-(16, 109, 1, '4x4', '1', 1, 'qwewqqw', 2, 0, 0, 400000, 0, 5000, '5e2791efdf3c0.jpg');
+INSERT INTO `kamar` (`id_kamar`, `nomor_kamar`, `id_tipe`, `luas_kamar`, `lantai_kamar`, `kapasitas_kamar`, `deskripsi_kamar`, `id_layanan`, `harga_harian`, `harga_mingguan`, `harga_bulanan`, `harga_tahunan`, `denda`, `foto_kamar`, `is_used`) VALUES
+(3, 111, 2, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 80000, 300000, 360000, 5000, '5e166d07c1269.jpg', 0),
+(4, 101, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 70000, 300000, 1200000, 5000, '5e166d1d291b0.jpg', 0),
+(5, 102, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 65000, 300000, 330000, 5000, '5e166d28510e6.jpg', 0),
+(6, 103, 1, '4x4', '1', 1, 'Kamar Mandi Dalam, Satu tempat tidur, satu lemari, satu meja, 2 kursi', 2, 10000, 65000, 300000, 330000, 5000, '5e166d36598d9.jpg', 0),
+(7, 104, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 65000, 300000, 330000, 5000, '5e166d4179726.jpeg', 0),
+(8, 105, 1, '4x4', '1', 1, 'asdasdasdasdsad', 1, 0, 0, 300000, 0, 5000, '5e192d0d9e4d6.jpg', 0),
+(9, 106, 1, '4x4', '1', 1, 'asdadasdadasadds', 2, 0, 0, 400000, 0, 5000, '5e1a901df0b7d.jpeg', 0),
+(10, 110, 1, '4x4', '1', 1, 'aswdasds', 2, 0, 0, 300000, 0, 5000, '5e26fc65676a8.jpg', 0),
+(11, 112, 1, '4x4', '1', 1, 'qwewqeqwe', 2, 0, 0, 300000, 0, 5000, '5e26fdb5ef3dc.jpg', 0),
+(12, 113, 1, '4x4', '1', 1, 'deqdqdqwdwqdqwd', 2, 0, 0, 300000, 0, 5000, '5e26fdcfb8da5.jpeg', 0),
+(13, 114, 1, '4x4', '1', 1, 'sdqweqweqweqweqwghtjy', 2, 0, 0, 300000, 0, 5000, '5e26fdf2979ee.jpg', 0),
+(14, 107, 1, '4x4', '1', 1, 'fegopjf ewiqdjhpw ewjp', 2, 0, 0, 400000, 0, 5000, '5e2791b9e2671.jpeg', 0),
+(15, 108, 1, '4x4', '1', 1, 'wqwq weq qwefdaa qw', 2, 0, 0, 400000, 0, 5000, '5e2791d2e2c12.jpg', 0),
+(16, 109, 1, '4x4', '1', 1, 'qwewqqw', 2, 0, 0, 400000, 0, 5000, '5e2791efdf3c0.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -210,6 +211,14 @@ CREATE TABLE `menghuni` (
   `tanggal_keluar` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `menghuni`
+--
+
+INSERT INTO `menghuni` (`id_menghuni`, `id_kamar`, `id_pengguna`, `tanggal_masuk`, `tanggal_keluar`) VALUES
+(1, 3, 11, '2020-04-29', '0000-00-00'),
+(3, 15, 13, '2020-04-05', '0000-00-00');
+
 -- --------------------------------------------------------
 
 --
@@ -225,6 +234,18 @@ CREATE TABLE `pembayaran` (
   `keterangan` varchar(255) NOT NULL,
   `id_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_menghuni`, `tanggal_pembayaran`, `nilai_pembayaran`, `bukti_pembayaran`, `keterangan`, `id_status`) VALUES
+(7, 1, '2020-04-29', 200000, '', '', 1),
+(8, 1, '2020-03-12', 200000, '', '', 1),
+(9, 1, '2020-02-13', 600000, '', '', 1),
+(10, 1, '2020-04-21', 400000, '', '', 2),
+(11, 3, '2020-05-01', 300000, '', '', 1),
+(12, 3, '2020-04-01', 300000, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -281,8 +302,9 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id_pengguna`, `nama_pengguna`, `alamat_pengguna`, `provinsi_pengguna`, `kota_pengguna`, `telepon_pengguna`, `email_pengguna`, `kelamin_pengguna`, `tanggal_lahir_pengguna`, `no_ktp_pengguna`, `password`, `id_akses`, `foto_pengguna`, `is_active`, `time_created`) VALUES
-(7, 'Abdul Jali', 'Jl Baturaden Gg 10 No. 7', 'Jawa Timur', 'Jember', '082335783552', 'nadasthing@gmail.com', 'Pria', '1999-12-15', '000988166627120913', '$2y$10$vgbzRZfQx3Uu66AeJG4T7u4CVDmrPwpuPq5NGq/kLa4v04dpWdOfO', 1, '5e1a943eeae2e.jpg', 1, 1587647284),
-(11, 'Nada', NULL, NULL, NULL, '085735678159', 'hasni.nada.75@gmail.com', NULL, NULL, NULL, '$2y$10$j1fJrTMvOamPwEDy4EgqPuHhgqgzcWGCtaD13VohRpbQ9U5mZrBa2', 3, NULL, 1, 1587714593);
+(7, 'Abdul Jali', 'Jl Baturaden Gg 10 No. 7', 'Jawa Timur', 'Jember', '082335783552', 'nadasthing@gmail.com', 'Pria', '1999-12-15', '000988166627120913', '$2y$10$7YlZGUOzSanx6RhX/VcNmedWj8XQtjrKyb2LVPlbI7aNXslwyvfkC', 1, '5e1a943eeae2e.jpg', 1, 1587647284),
+(11, 'Ciloq Ciliq', 'Jl. Diponegoro VII 73', 'Jawa Timur', 'Jember', '085735678159', 'ciloqciliq@gmail.com', 'Pria', '2020-05-04', '3509191412990007', '$2y$10$1DvEVo0TOhUFJPad1G3IvOloHucu2sFLTAdq5l9NRNufS7na1NYMu', 2, 'c3758e542abce51cfd1ac7a1f292d212.jpg', 1, 1587714593),
+(13, 'Ntsana Canteq', 'Jl berdua bersamaku', 'Jawa Timur', 'Jember', '08123456789', 'ntsana@gmail.com', 'Wanita', '2020-05-11', '1777288199129012', '$2y$10$1DvEVo0TOhUFJPad1G3IvOloHucu2sFLTAdq5l9NRNufS7na1NYMu', 2, '72724240987d5e26723855c272971df8.jpg', 1, 1587648461);
 
 -- --------------------------------------------------------
 
@@ -315,6 +337,15 @@ CREATE TABLE `user_token` (
   `token` varchar(128) NOT NULL,
   `date_created` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `user_token`
+--
+
+INSERT INTO `user_token` (`id`, `email`, `token`, `date_created`) VALUES
+(8, 'hasni.nada.75@gmail.com', '15ea2c72bbb0be', 1587726123),
+(9, 'alipbata123@gmail.com', '15eaad77a31614', 1588254586),
+(10, 'alipbata124@gmail.com', '15eaad7f0660e5', 1588254704);
 
 --
 -- Indexes for dumped tables
@@ -461,13 +492,13 @@ ALTER TABLE `layanan`
 -- AUTO_INCREMENT untuk tabel `menghuni`
 --
 ALTER TABLE `menghuni`
-  MODIFY `id_menghuni` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_menghuni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
@@ -479,7 +510,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT untuk tabel `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `tipe_kamar`
@@ -491,7 +522,7 @@ ALTER TABLE `tipe_kamar`
 -- AUTO_INCREMENT untuk tabel `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

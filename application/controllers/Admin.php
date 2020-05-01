@@ -48,7 +48,7 @@ class Admin extends CI_Controller {
 
 
 
-    // fungsi untuk booking kamar
+    // fungsi untuk menu penghuni
     public function penghuni(){
         $this->_verifyAccess();
 
@@ -59,12 +59,13 @@ class Admin extends CI_Controller {
         $data['menu'] = 'penghuni';
         $data['subMenu'] = '';
         $data['user'] = $this->User_model->getUserByEmail($email);
-        $data['level'] = $this->User_model->getHakAksesById($id_akses);   
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['penghuni'] = $this->User_model->getAllPenghuni();
 
         $this->load->view('partial/admin_partial/header_admin.php', $data);
         $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
         $this->load->view('partial/admin_partial/topbar_admin.php', $data);
-        // $this->load->view('admin/dashboard_view.php', $data);
+        $this->load->view('admin/penghuni_view.php', $data);
         $this->load->view('partial/admin_partial/footer_admin.php', $data);    
     }
 
@@ -78,21 +79,45 @@ class Admin extends CI_Controller {
     public function bookingKamar(){
         $this->_verifyAccess();
 
-        $email = $this->session->userdata('email');
-        $id_akses = $this->session->userdata('id_akses');
         
-        $data['tittle'] = "Booking Kamar";
-        $data['menu'] = 'kamar';
-        $data['subMenu'] = 'booking_kamar';
-        $data['user'] = $this->User_model->getUserByEmail($email);
-        $data['level'] = $this->User_model->getHakAksesById($id_akses);    
-
-        $this->load->view('partial/admin_partial/header_admin.php', $data);
-        $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
-        $this->load->view('partial/admin_partial/topbar_admin.php', $data);
-        $this->load->view('admin/dashboard_view.php', $data);
-        $this->load->view('partial/admin_partial/footer_admin.php', $data);    
     }
+
+
+
+
+
+
+
+
+    // fungsi untuk menjalankan ajax
+    public function ajax(){
+        $this->_verifyAccess();
+
+        $ajax_menu = $this->input->post('ajax_menu');
+
+        // ajax pada menu penghuni
+        if($ajax_menu == 'get_penghuni'){
+            $id_pengguna = $this->input->post('id_pengguna');
+            $data['penghuni'] = $this->User_model->getUserById($id_pengguna);
+
+            $this->load->view('admin/ajax/get_data_penghuni_view', $data);
+        } else if ($ajax_menu == 'edit_penghuni') {
+            $id_pengguna = $this->input->post('id_pengguna');
+            
+            $data['penghuni'] = $this->User_model->getUserById($id_pengguna);
+            
+            $this->load->view('admin/ajax/update_data_penghuni_view', $data);        
+        }
+
+
+        
+        // ajax pada menu lainnya
+    }
+
+
+
+
+
 
 
     // fungsi validasi hak akses

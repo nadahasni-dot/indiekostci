@@ -46,20 +46,24 @@
 <!-- Core plugin JavaScript-->
 <script src="<?= base_url('assets/vendor/jquery-easing/jquery.easing.min.js') ?>"></script>
 
-
-
 <!-- Custom scripts for all pages-->
 <script src="<?= base_url('assets/js/sb-admin-2.min.js') ?>"></script>
 
 <!-- Page level plugins -->
 <script src="<?= base_url('assets/vendor/chart.js/Chart.min.js') ?>"></script>
 
+<!-- lightbox -->
+<script src="<?= base_url('assets/js/lightbox.js') ?>"></script>
+
+<!-- Page level plugins -->
+    <script src="<?= base_url('assets/vendor/datatables/jquery.dataTables.min.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/datatables/dataTables.bootstrap4.min.js') ?>"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="<?= base_url('assets/js/demo/datatables-demo.js') ?>"></script>
+
+
 <?php if($menu == 'dashboard'): ?>
-
-    
-
-    
-
 <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito',
@@ -193,6 +197,53 @@
       }
     });
   </script>
+<?php elseif($menu == 'penghuni'): ?>
+  <script>
+      $(document).ready(function () {
+
+        // untuk view data
+        $('#dataTable').on('click','.view_data', function () {
+          var id_pengguna = $(this).attr('id');
+
+          $.ajax({
+            url: "<?= base_url('admin/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'get_penghuni',
+              id_pengguna: id_pengguna
+            },
+            success: function (data) {
+              $('#detail_pengguna').html(data);
+              $('#viewModal').modal();
+            }
+          });
+        });
+
+        // edit data
+        $('#dataTable').on('click','.edit_data', function () {
+          var $tr = $(this).closest('tr');
+
+          var data = $tr.children("td").map(function () {
+            return $(this).text();
+          }).get();
+
+          var id_pengguna = data[1];
+
+          $.ajax({
+            url: "<?= base_url('admin/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'edit_penghuni',
+              id_pengguna: id_pengguna
+            },
+            success: function (data) {
+              $('#detail_edit').html(data);
+              $('#updateModal').modal();
+            }
+          });
+        });
+      });
+    </script>
 <?php endif; ?>
 
 </body>
