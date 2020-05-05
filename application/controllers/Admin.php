@@ -284,6 +284,53 @@ class Admin extends CI_Controller {
 
 
 
+  // fungsi untuk laba rugi 
+     public function labaRugi(){
+        $this->_verifyAccess();
+
+        $this->load->model('Laporan_model');
+        
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+        
+        $data['tittle'] = "Laporan | Laba Rugi";
+        $data['menu'] = 'laporan';
+        $data['subMenu'] = 'laba_rugi';
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['tahun_pembayaran'] = $this->Laporan_model->getTahunPembayaran();
+        
+        $this->load->view('partial/admin_partial/header_admin', $data);
+        $this->load->view('partial/admin_partial/sidebar_admin', $data);
+        $this->load->view('partial/admin_partial/topbar_admin', $data);
+        $this->load->view('admin/labarugi_view', $data);
+        $this->load->view('partial/admin_partial/footer_admin', $data);
+    }
+    
+    // tagihan/pengeluaran 
+    public function pengeluaran(){
+        $this->_verifyAccess();
+        
+        $this->load->model('Laporan_model');
+        
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+        
+        $data['tittle'] = "Laporan | Pengeluaran";
+        $data['menu'] = 'laporan';
+        $data['subMenu'] = 'laporan_pengeluaran';
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['tahun_pembayaran'] = $this->Laporan_model->getTahunPembayaran();
+
+        $this->load->view('partial/admin_partial/header_admin', $data);
+        $this->load->view('partial/admin_partial/sidebar_admin', $data);
+        $this->load->view('partial/admin_partial/topbar_admin', $data);
+        $this->load->view('admin/laporan_pengeluaran_view', $data);
+        $this->load->view('partial/admin_partial/footer_admin', $data);
+    }
+
+
 
 
 
