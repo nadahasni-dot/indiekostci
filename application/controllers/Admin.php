@@ -308,7 +308,7 @@ class Admin extends CI_Controller {
     }
     
     // tagihan/pengeluaran 
-    public function pengeluaran(){
+    public function laporanpengeluaran(){
         $this->_verifyAccess();
         
         $this->load->model('Laporan_model');
@@ -335,9 +335,71 @@ class Admin extends CI_Controller {
 
 
 
+    // fungsi untuk menu data layanan
+    public function dataLayanan(){
+        $this->_verifyAccess();
+
+        $this->load->model('Masterdata_model');
+
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+        
+        $data['tittle'] = "Master | Data Layanan";
+        $data['menu'] = 'masterdata';
+        $data['subMenu'] = 'data_layanan';
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);        
+        $data['data_layanan'] = $this->Masterdata_model->getAllLayanan();
+
+        $this->load->view('partial/admin_partial/header_admin', $data);
+        $this->load->view('partial/admin_partial/sidebar_admin', $data);
+        $this->load->view('partial/admin_partial/topbar_admin', $data);
+        $this->load->view('admin/datalayanan_view', $data);
+        $this->load->view('partial/admin_partial/footer_admin', $data);
+    }
+
+
+
+
+
+    // input data layanan baru
+    public function createDataLayanan(){
+        $this->_verifyAccess();
+
+        $this->load->model('Masterdata_model');
+
+        $nama_layanan = $this->input->post('inputLayanan');
+        $harga_layanan = $this->input->post('inputHarga');
+
+        $data = array(
+            'nama_layanan' => $nama_layanan,
+            'harga_bulanan' => $harga_layanan
+        );
+
+        if($this->Masterdata_model->insertLayanan($data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menambah Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/datalayanan');
+        } else {
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/datalayanan');
+        }
+    }
+
+
+
+
+
+
+
     // fungsi untuk menjalankan ajax
     public function ajax(){
         $this->_verifyAccess();
+
+        $this->load->model('Masterdata_model');
 
         $ajax_menu = $this->input->post('ajax_menu');
 
@@ -353,6 +415,12 @@ class Admin extends CI_Controller {
             $data['penghuni'] = $this->User_model->getUserById($id_pengguna);
             
             $this->load->view('admin/ajax/update_data_penghuni_view', $data);        
+        } else if ($ajax_menu == 'edit_datalayanan'){
+            $id_layanan = $this->input->post('id_layanan');
+
+            $data['layanan'] = $this->Masterdata_model->getLayananById($id_layanan);
+
+            $this->load->view('admin/ajax/update_data_layanan_view', $data);
         }
 
 

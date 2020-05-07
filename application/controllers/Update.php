@@ -65,6 +65,36 @@ class Update extends CI_Controller {
 
 
 
+    public function updateDataLayanan(){
+        $this->_verifyAccess('admin');
+
+        $id_layanan = $this->input->post('id');
+
+        $data = array(
+            'nama_layanan' => $this->input->post('namaLayanan'),
+            'harga_bulanan' => $this->input->post('hargaLayanan')
+        );
+
+        $this->load->model('Masterdata_model');
+
+        if($this->Masterdata_model->updateDataLayanan($id_layanan, $data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Update Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/datalayanan');
+        } else {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gaga; Update Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/datalayanan');
+        }
+    }
+
+
+
+
+
+
     // fungsi untukupload image
     private function _uploadImage(){
         // konfigurasi

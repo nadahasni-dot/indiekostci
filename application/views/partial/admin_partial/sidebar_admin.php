@@ -238,7 +238,7 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Menu:</h6>
 				<a class="collapse-item active" href="<?= base_url('admin/labarugi'); ?>">Laporan Laba/Rugi</a>
-				<a class="collapse-item" href="<?= base_url('admin/pengeluaran'); ?>">Laporan Pengeluaran</a>
+				<a class="collapse-item" href="<?= base_url('admin/laporanpengeluaran'); ?>">Laporan Pengeluaran</a>
 				<!-- <a class="collapse-item" href="admin-status-kamar.php">Laporan Status Kamar</a> -->
 			</div>
 		</div>
@@ -257,7 +257,7 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Menu:</h6>
 				<a class="collapse-item" href="<?= base_url('admin/labarugi'); ?>">Laporan Laba/Rugi</a>
-				<a class="collapse-item active" href="<?= base_url('admin/pengeluaran'); ?>">Laporan Pengeluaran</a>
+				<a class="collapse-item active" href="<?= base_url('admin/laporanpengeluaran'); ?>">Laporan Pengeluaran</a>
 				<!-- <a class="collapse-item" href="admin-status-kamar.php">Laporan Status Kamar</a> -->
 			</div>
 		</div>
@@ -277,7 +277,7 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Menu:</h6>
 				<a class="collapse-item" href="<?= base_url('admin/labarugi'); ?>">Laporan Laba/Rugi</a>
-				<a class="collapse-item" href="<?= base_url('admin/pengeluaran'); ?>">Laporan Pengeluaran</a>
+				<a class="collapse-item" href="<?= base_url('admin/laporanpengeluaran'); ?>">Laporan Pengeluaran</a>
 				<!-- <a class="collapse-item" href="admin-status-kamar.php">Laporan Status Kamar</a> -->
 			</div>
 		</div>

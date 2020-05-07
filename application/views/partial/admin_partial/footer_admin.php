@@ -244,6 +244,31 @@
         });
       });
     </script>
+
+<?php elseif($subMenu == 'data_layanan'): ?>
+
+  <script>
+    $(document).ready(function(){
+      // untuk view data
+      $('#dataTable').on('click','.view_data', function () {
+          var id_layanan = $(this).attr('id');
+
+          $.ajax({
+            url: "<?= base_url('admin/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'edit_datalayanan',
+              id_layanan: id_layanan
+            },
+            success: function (data) {
+              $('#detail_layanan').html(data);
+              $('#updateModal').modal();
+            }
+          });
+        });
+    });
+    </script>
+
 <?php endif; ?>
 
 </body>
