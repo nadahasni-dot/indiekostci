@@ -6,7 +6,7 @@
   			<h3>WELCOME</h3>
   			<h1 class="display-4 text-uppercase">RUMAH <?= $info_kost['nama_kost'] ?></h1>
   			<p class="lead"><?= $info_kost['deskripsi_kost'] ?></p>
-  			<a href="pages/kamar-tersedia.php" class="btn up-1 btn-gradient">Cek Ketersediaan Kamar</a>
+  			<a href="<?= base_url('welcome/ketersediaankamar'); ?>" class="btn up-1 btn-gradient">Cek Ketersediaan Kamar</a>
   		</div>
   	</div>
   	<!-- jumbotron -->

@@ -32,4 +32,19 @@ class Welcome extends CI_Controller {
 		$this->load->view('landing_page/landing_view', $data);
 		$this->load->view('partial/landing_partial/footer_landing');
 	}
+
+	public function ketersediaanKamar(){
+		// var_dump($this->Welcome_model->getKamarTersedia());
+
+		$this->load->view('landing_page/ketersediaankamar_view.php');
+	}
+
+
+
+	public function ajax(){
+		$ajax_menu = $this->input->post('menu');
+
+		$data['data_kamar'] = $this->Welcome_model->getKamarTersedia();
+		$this->load->view('landing_page/ajax/get_kamar_live', $data);
+	}
 }
