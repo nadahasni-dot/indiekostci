@@ -268,7 +268,28 @@
         });
     });
     </script>
+<?php elseif($subMenu == 'data_jenis_pengeluaran'): ?>
+  <script>
+    $(document).ready(function(){
+      // untuk view data
+      $('#dataTable').on('click','.view_data', function () {
+          var id_jenis_pengeluaran = $(this).attr('id');
 
+          $.ajax({
+            url: "<?= base_url('admin/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'edit_datajenispengeluaran',
+              id_jenis_pengeluaran: id_jenis_pengeluaran
+            },
+            success: function (data) {
+              $('#detail_jenis_pengeluaran').html(data);
+              $('#updateModal').modal();
+            }
+          });
+        });
+    });
+    </script>
 <?php endif; ?>
 
 </body>

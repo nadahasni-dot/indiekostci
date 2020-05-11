@@ -391,6 +391,63 @@ class Admin extends CI_Controller {
 
 
 
+    
+    // fungsi untuk menu data jenis pengeluaran
+    public function datajenispengeluaran(){
+        $this->_verifyAccess();
+    
+        $this->load->model('Masterdata_model');
+    
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+        
+        $data['tittle'] = "Master | Data jenis pengeluaran";
+        $data['menu'] = 'masterdata';
+        $data['subMenu'] = 'data_jenis_pengeluaran';
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);        
+        $data['data_jenis_pengeluaran'] = $this->Masterdata_model->getAllJenisPengeluaran();
+    
+        $this->load->view('partial/admin_partial/header_admin', $data);
+        $this->load->view('partial/admin_partial/sidebar_admin', $data);
+        $this->load->view('partial/admin_partial/topbar_admin', $data);
+        $this->load->view('admin/datajenispengeluaran_view', $data);
+        $this->load->view('partial/admin_partial/footer_admin', $data);
+    }
+
+
+
+    // input data jenis pengeluaran baru
+    public function createDataJenisPengeluaran(){
+        $this->_verifyAccess();
+    
+        $this->load->model('Masterdata_model');
+    
+        $kode_jenis_pengeluaran = $this->input->post('kode_pengeluaran', true);
+        $kategori_jenis_pengeluaran = $this->input->post('kategori');
+        $nama_jenis_pengeluaran = $this->input->post('nama');
+    
+        $data = array(
+            'kode_pengeluaran' => $kode_jenis_pengeluaran,
+            'kategori_pengeluaran' => $kategori_jenis_pengeluaran,
+            'nama_pengeluaran' => $nama_jenis_pengeluaran
+        );
+    
+        if($this->Masterdata_model->insertJenisPengeluaran($data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menambah Jenis Pengeluaran <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect('admin/datajenispengeluaran');
+        } else {
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Jenis Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/datajenispengeluaran');
+        }
+    }
+
+
+
 
 
 
@@ -419,8 +476,14 @@ class Admin extends CI_Controller {
             $id_layanan = $this->input->post('id_layanan');
 
             $data['layanan'] = $this->Masterdata_model->getLayananById($id_layanan);
-
+            
             $this->load->view('admin/ajax/update_data_layanan_view', $data);
+        } else if ($ajax_menu == 'edit_datajenispengeluaran'){
+            $id_jenis_pengeluaran = $this->input->post('id_jenis_pengeluaran', true);
+            
+            $data['jenis_pengeluaran'] = $this->Masterdata_model->getJenisPengeluaranById($id_jenis_pengeluaran);
+                        
+            $this->load->view('admin/ajax/update_data_jenispengeluaran_view', $data);
         }
 
 

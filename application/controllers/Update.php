@@ -84,9 +84,37 @@ class Update extends CI_Controller {
             redirect('admin/datalayanan');
         } else {
             //flash data jika berhasil
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gaga; Update Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Update Data Layanan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             
             redirect('admin/datalayanan');
+        }
+    }
+
+
+
+    public function updateDataJenisPengeluaran(){
+        $this->_verifyAccess('admin');
+
+        $id_jenis_pengeluaran = $this->input->post('id');
+
+        $data = array(
+            'kode_pengeluaran' => $this->input->post('kodePengeluaran', true),
+            'kategori_pengeluaran' => $this->input->post('kategori', true),
+            'nama_pengeluaran' => $this->input->post('namaPengeluaran', true)
+        );
+
+        $this->load->model('Masterdata_model');
+
+        if($this->Masterdata_model->updateDataJenisPengeluaran($id_jenis_pengeluaran, $data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Update Data Jenis Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/datajenispengeluaran');
+        } else {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Update Data Jenis Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/datajenispengeluaran');
         }
     }
 
