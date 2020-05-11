@@ -415,6 +415,74 @@ class Admin extends CI_Controller {
         $this->load->view('partial/admin_partial/footer_admin', $data);
     }
 
+        //Start Data Tipe Kamar
+
+        public function dataTipeKamar()
+        {
+            $this->_verifyAccess();
+    
+            $email = $this->session->userdata('email');
+            $id_akses = $this->session->userdata('id_akses');
+            $this->load->model("dataTipeKamar_model");
+            $data['tittle'] = "Data Tipe Kamar";
+            $data['menu'] = 'masterdata';
+            $data['subMenu'] = 'data_tipe_kamar';
+            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['level'] = $this->User_model->getHakAksesById($id_akses);
+            $data['tipe'] = $this->dataTipeKamar_model->get_view()->result_array();
+    
+            $this->load->view('partial/admin_partial/header_admin.php', $data);
+            $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
+            $this->load->view('partial/admin_partial/topbar_admin.php', $data);
+            $this->load->view('admin/datatipekamar_view.php', $data);
+            $this->load->view('partial/admin_partial/footer_admin.php', $data);
+        }
+    
+        public function dataTipeKamarById($id)
+        {
+            $this->load->model("dataTipeKamar_model");
+            echo json_encode($this->dataTipeKamar_model->getTipeKamarById($id));
+        }
+    
+        public function saveTipeKamar()
+        {
+            $this->load->model('dataTipeKamar_model');
+    
+            if (empty($_POST['idTipe'])) {
+                $data = [
+                    'nama_tipe'       => $_POST['namaTipe'],
+                ];
+    
+                $this->dataTipeKamar_model->saveTipeKamar($data);
+            } else {
+    
+                $data = [
+                    'id_tipe'         => $_POST['idTipe'],
+                    'nama_tipe'       => $_POST['namaTipe'],
+                ];
+    
+                $this->dataTipeKamar_model->saveTipeKamar($data);
+            }
+            redirect('Admin/dataTipeKamar');
+        }
+    
+        public function deleteTipeKamar($id = null)
+        {
+    
+            $this->load->model('dataTipeKamar_model');
+            if (!isset($id)) show_404();
+    
+    
+            if ($this->dataTipeKamar_model->delete_TipeKamar($id)) {
+                redirect('Admin/dataTipeKamar');
+            } else {
+                $this->session->set_flashdata('flash', 'Gagal');
+                redirect('Admin/dataTipeKamar');
+            }
+        }
+    
+        //End Tipe Kamar
+
 
 
     // input data jenis pengeluaran baru
