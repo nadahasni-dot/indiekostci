@@ -170,4 +170,87 @@ class Update extends CI_Controller {
             }
         }
     }
+
+    // fungsi untuk update data profil
+    public function updateProfil(){
+        $this->_verifyAccess('admin');
+
+        $id_pengguna = $this->input->post('id_pengguna');
+        $fotoProfil = $this->_uploadImage('foto_baru');
+
+        // apabila foto profil tidak terpilih maka digunakan foto lama
+        if($fotoProfil == ""){
+            $fotoProfil = $this->input->post('foto_lama');
+        }
+
+        $data = array(
+            'nama_pengguna' => $this->input->post('nama'),
+            'alamat_pengguna' => $this->input->post('alamat'),
+            'provinsi_pengguna' => $this->input->post('provinsi'),
+            'kota_pengguna' => $this->input->post('kota'),
+            'telepon_pengguna' => $this->input->post('telepon'),
+            'email_pengguna' => $this->input->post('email'),
+            'kelamin_pengguna' => $this->input->post('jKelamin'),
+            'tanggal_lahir_pengguna' => $this->input->post('tgl'),
+            'no_ktp_pengguna' => $this->input->post('nik'),
+            'foto_pengguna' => $fotoProfil
+        );
+
+        // update user di database
+        $this->load->model('User_model');
+        $this->User_model->updateUser($id_pengguna, $data);       
+        
+        //flash data jika berhasil
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Profil<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+        redirect(base_url('admin/settingsprofil'));
+    }
+
+
+
+
+
+    // fungsi untuk update infokost
+    public function updateInfoKost()
+    {
+        $this->_verifyAccess('admin');
+
+        $id_kost = $this->input->post('id');
+
+        $fotoKost = $this->_uploadImage('foto_baru');
+        // apabila foto tidak terpilih maka digunakan foto lama
+        if($fotoKost == ""){
+            $fotoKost = $this->input->post('foto_lama');
+        }
+
+        $data = array(
+            'jenis_kost'        => $this->input->post('jKost'),
+            'nama_kost'         => $this->input->post('nama'),
+            'alamat_kost'       => $this->input->post('alamat'),
+            'provinsi_kost'     => $this->input->post('provinsi'),
+            'kota_kost'         => $this->input->post('kota'),
+            'no_kost'           => $this->input->post('telepon'),
+            'email_kost'        => $this->input->post('email'),
+            'foto_kost'         => $fotoKost,
+            'deskripsi_kost'    => $this->input->post('desc')
+        );
+
+        // update infokost
+        $this->load->model('Settings_model');
+        if($this->Settings_model->updateInfoKost($id_kost, $data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Informasi Kost<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/settingsinfokost');
+        } else {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Memperbarui Data Informasi Kost<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/settingsinfokost');
+        }
+        
+    }
+
+
+
 }

@@ -519,6 +519,118 @@ class Admin extends CI_Controller {
 
 
 
+        // menu settings profil
+        public function settingsProfil(){
+            $this->_verifyAccess();
+    
+            $email = $this->session->userdata('email');
+            $id_akses = $this->session->userdata('id_akses');
+    
+            $this->load->model('Settings_model');
+    
+            $data['title'] = "Pengeluaran";
+            $data['menu'] = 'profil';        
+            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['level'] = $this->User_model->getHakAksesById($id_akses);        
+            
+            $this->load->view('partial/admin_partial/admin_settings/header_settings_admin', $data);
+            $this->load->view('partial/admin_partial/admin_settings/sidebar_settings_admin', $data);
+            $this->load->view('partial/admin_partial/admin_settings/topbar_settings_admin', $data);
+            $this->load->view('admin/settings_profil_view', $data);
+            $this->load->view('partial/admin_partial/admin_settings/footer_settings_admin', $data);   
+        }
+    
+    
+    
+        // menu settings informasi kost
+        public function settingsInfoKost(){
+            $this->_verifyAccess();
+    
+            $email = $this->session->userdata('email');
+            $id_akses = $this->session->userdata('id_akses');
+    
+            $this->load->model('Welcome_model');
+    
+            $data['title'] = "Informasi Kost";
+            $data['menu'] = 'info_kost';        
+            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['level'] = $this->User_model->getHakAksesById($id_akses);
+            $data['info_kost'] = $this->Welcome_model->getInfoKost();        
+            
+            $this->load->view('partial/admin_partial/admin_settings/header_settings_admin', $data);
+            $this->load->view('partial/admin_partial/admin_settings/sidebar_settings_admin', $data);
+            $this->load->view('partial/admin_partial/admin_settings/topbar_settings_admin', $data);
+            $this->load->view('admin/settings_infokost_view', $data);
+            $this->load->view('partial/admin_partial/admin_settings/footer_settings_admin', $data);   
+        }
+    
+    
+    
+    
+        // menu settings informasi kost
+        public function settingsPassword(){
+            $this->_verifyAccess();            
+    
+            $email = $this->session->userdata('email');
+            $id_akses = $this->session->userdata('id_akses');
+    
+            $this->load->model('Settings_model');
+    
+            $this->form_validation->set_rules('id', 'id', 'required|trim');  
+            $this->form_validation->set_rules('pass_lama', 'pass_lama', 'required|trim');  
+            $this->form_validation->set_rules('pass_baru', 'pass_baru', 'required|trim|min_length[8]|matches[pass_baru_verifikasi]', [
+                'matches' => 'Password tidak sama!',
+                'min_length' => 'Password minimal 8 karakter!'
+            ]);
+            $this->form_validation->set_rules('pass_baru_verifikasi', 'pass_baru_verifikasi', 'required|trim|matches[pass_baru]');  
+                
+            $data['title'] = "Rubah Password";
+            $data['menu'] = 'rubah_pass';        
+            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['level'] = $this->User_model->getHakAksesById($id_akses);
+
+            if($this->form_validation->run() == false){
+
+                $this->load->view('partial/admin_partial/admin_settings/header_settings_admin', $data);
+                $this->load->view('partial/admin_partial/admin_settings/sidebar_settings_admin', $data);
+                $this->load->view('partial/admin_partial/admin_settings/topbar_settings_admin', $data);
+                $this->load->view('admin/settings_password_view', $data);
+                $this->load->view('partial/admin_partial/admin_settings/footer_settings_admin', $data);   
+            } else {                
+                $password_lama = $this->input->post('pass_lama', true);
+                $password_baru = $this->input->post('pass_baru', true);
+
+                // cek apakah password lama telah sesuai
+                if(password_verify($password_lama, $data['user']['password'])){
+                    $password = password_hash($password_baru, PASSWORD_DEFAULT);
+
+                    $this->db->set('password', $password);
+                    $this->db->where('id_pengguna', $data['user']['id_pengguna']);
+                    // jika berhasil update
+                    if($this->db->update('pengguna')){
+                        //flash data berhasil
+                        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil merubah password. Silahkan login kembali<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+                        redirect('admin/settingspassword');
+                    } else {
+                        //flash data jika gagal
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal merubah password<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+                        redirect('admin/settingspassword');
+                    }
+                } else {
+                    //flash data jika gagal
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password lama anda salah<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+                    redirect('admin/settingspassword');
+                }
+            }
+            
+        }
+
+
+
+
 
     // fungsi untuk menjalankan ajax
     public function ajax(){
@@ -552,6 +664,21 @@ class Admin extends CI_Controller {
             $data['jenis_pengeluaran'] = $this->Masterdata_model->getJenisPengeluaranById($id_jenis_pengeluaran);
                         
             $this->load->view('admin/ajax/update_data_jenispengeluaran_view', $data);
+        } else if ($ajax_menu == 'edit_profil'){
+            $id_pengguna = $this->input->post('id_pengguna');
+            
+            $data['penghuni'] = $this->User_model->getUserById($id_pengguna);
+            $this->load->view('admin/ajax/update_data_profil_view', $data);    
+        } else if($ajax_menu == 'edit_info_kost'){
+            $id_kost = $this->input->post('id_kost');
+            $email = $this->session->userdata('email');
+
+            $this->load->model('Settings_model');
+
+            $data['user'] = $this->User_model->getUserByEmail($email);
+
+            $data['info_kost'] = $this->Settings_model->getInfoKostById($id_kost);
+            $this->load->view('admin/ajax/update_data_infokost_view', $data);    
         }
 
 
