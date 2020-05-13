@@ -11,6 +11,11 @@ class Masterdata_model extends CI_Model {
         return $this->db->get('layanan')->row_array();
     }
 
+    public function getTipeKamarByid($id){
+        $this->db->where('id_tipe', $id);
+        return $this->db->get('tipe_kamar')->row_array();
+    }
+
     public function getJenisPengeluaranById($id){
         $this->db->where('id_jenis_pengeluaran', $id);
         return $this->db->get('jenis_pengeluaran')->row_array();
@@ -49,6 +54,11 @@ class Masterdata_model extends CI_Model {
     public function updateDataJenisPengeluaran($id_jenis_pengeluaran, $data){
         $this->db->where('id_jenis_pengeluaran', $id_jenis_pengeluaran);
         return $this->db->update('jenis_pengeluaran', $data);
+    }
+
+    public function updateDataTipeKamar($id_tipe_kamar, $data){
+        $this->db->where('id_tipe', $id_tipe_kamar);
+        return $this->db->update('tipe_kamar', $data);
     }
 
 

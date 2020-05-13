@@ -290,6 +290,28 @@
         });
     });
     </script>
+    <?php elseif ($subMenu == 'data_tipe_kamar' ) : ?>
+      <script>
+    $(document).ready(function(){
+      // untuk view data
+      $('#dataTable').on('click','.view_data', function () {
+          var id_tipe = $(this).attr('id');
+
+          $.ajax({
+            url: "<?= base_url('admin/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'edit_datatipekamar',
+              id_tipe: id_tipe
+            },
+            success: function (data) {
+              $('#detail_tipe_kamar').html(data);
+              $('#updateModal').modal();
+            }
+          });
+        });
+    });
+    </script>
 <?php endif; ?>
 
 </body>

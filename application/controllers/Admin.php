@@ -463,6 +463,9 @@ class Admin extends CI_Controller {
     
                 $this->dataTipeKamar_model->saveTipeKamar($data);
             }
+
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menambah Data Tipe Kamar <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');            
             redirect('Admin/dataTipeKamar');
         }
     
@@ -474,8 +477,12 @@ class Admin extends CI_Controller {
     
     
             if ($this->dataTipeKamar_model->delete_TipeKamar($id)) {
+                //flash data jika berhasil
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menghapus Data Tipe Kamar <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
                 redirect('Admin/dataTipeKamar');
             } else {
+                //flash data jika gagal
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data Tipe Kamar sedang digunakan. Tidak dapat menghapus data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
                 $this->session->set_flashdata('flash', 'Gagal');
                 redirect('Admin/dataTipeKamar');
             }
@@ -664,6 +671,12 @@ class Admin extends CI_Controller {
             $data['jenis_pengeluaran'] = $this->Masterdata_model->getJenisPengeluaranById($id_jenis_pengeluaran);
                         
             $this->load->view('admin/ajax/update_data_jenispengeluaran_view', $data);
+        } else if($ajax_menu == 'edit_datatipekamar'){
+            $id_tipe_kamar = $this->input->post('id_tipe', true);
+            
+            $data['tipe_kamar'] = $this->Masterdata_model->getTipeKamarById($id_tipe_kamar);
+                        
+            $this->load->view('admin/ajax/update_data_tipekamar_view', $data);
         } else if ($ajax_menu == 'edit_profil'){
             $id_pengguna = $this->input->post('id_pengguna');
             
