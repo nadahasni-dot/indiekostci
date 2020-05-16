@@ -524,6 +524,63 @@ class Admin extends CI_Controller {
 
 
 
+        // fungsi untuk menu pemasukan
+        public function pemasukan(){
+            $this->_verifyAccess();
+    
+            $this->load->model('Pembayaran_model');
+    
+            $email = $this->session->userdata('email');
+            $id_akses = $this->session->userdata('id_akses');
+            
+            $data['tittle'] = "Pemasukan";
+            $data['menu'] = 'pembayaran';
+            $data['subMenu'] = 'pemasukan';
+            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['level'] = $this->User_model->getHakAksesById($id_akses);
+            $data['pembayaran'] = $this->Pembayaran_model->getAllIncome();
+            $data['menghuni'] = $this->Pembayaran_model->getAllMenghuni();
+            $data['jenis_status'] = $this->Pembayaran_model->getAllJenisStatusPembayaran();
+    
+            $this->load->view('partial/admin_partial/header_admin.php', $data);
+            $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
+            $this->load->view('partial/admin_partial/topbar_admin.php', $data);
+            $this->load->view('admin/pemasukan_view', $data);
+            $this->load->view('partial/admin_partial/footer_admin.php', $data);    
+        }
+
+
+
+        // fungsi untuk menambah pemasukan/pembayaran baru
+    public function createPembayaran(){
+        $this->_verifyAccess();
+
+        $this->load->model('Pembayaran_model');
+
+        $data = array(
+            'id_menghuni'           => $this->input->post('menghuni'),
+            'tanggal_pembayaran'    => $this->input->post('tanggal'),
+            'nilai_pembayaran'      => $this->input->post('nominal'),
+            'bukti_pembayaran'      => $this->_uploadImage('bukti_pembayaran'),
+            'keterangan'            => $this->input->post('keterangan'),
+            'id_status'             => $this->input->post('status')
+        );
+        
+
+        if($this->Pembayaran_model->inputPembayaran($data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menambah Data Pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/pemasukan');
+        }else{
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Data Pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/pemasukan');
+        }
+    }
+
+
 
 
         // menu settings profil
@@ -636,6 +693,27 @@ class Admin extends CI_Controller {
         }
 
 
+    private function _uploadImage($name){
+        // konfigurasi
+        $config['upload_path']          = './assets/img/';
+        $config['allowed_types']        = 'gif|jpg|png';
+        $config['encrypt_name']         = TRUE; //Enkripsi nama yang terupload
+        $config['overwrite']			= TRUE;
+        $config['max_size']             = 2048; // 1MB
+        $config['file_ext_tolower']     = TRUE;
+        
+        $this->load->library('upload', $config);        
+        
+        // bila berhasil
+        if ($this->upload->do_upload($name)) {            
+            // ambil nama file foto
+            return $this->upload->data("file_name");
+        }else{
+            return "";
+        }
+    }
+
+    
 
 
 
@@ -644,8 +722,9 @@ class Admin extends CI_Controller {
         $this->_verifyAccess();
 
         $this->load->model('Masterdata_model');
+        $this->load->model('Pembayaran_model');
 
-        $ajax_menu = $this->input->post('ajax_menu');
+        $ajax_menu = $this->input->post('ajax_menu');        
 
         // ajax pada menu penghuni
         if($ajax_menu == 'get_penghuni'){
@@ -682,7 +761,7 @@ class Admin extends CI_Controller {
             
             $data['penghuni'] = $this->User_model->getUserById($id_pengguna);
             $this->load->view('admin/ajax/update_data_profil_view', $data);    
-        } else if($ajax_menu == 'edit_info_kost'){
+        } else if ($ajax_menu == 'edit_info_kost'){
             $id_kost = $this->input->post('id_kost');
             $email = $this->session->userdata('email');
 
@@ -692,6 +771,21 @@ class Admin extends CI_Controller {
 
             $data['info_kost'] = $this->Settings_model->getInfoKostById($id_kost);
             $this->load->view('admin/ajax/update_data_infokost_view', $data);    
+        } else if ($ajax_menu == 'get_pembayaran'){         
+            // ajax pada menu pemasukan   
+            $id_pembayaran = $this->input->post('id_pembayaran');            
+                
+            $data['pembayaran'] = $this->Pembayaran_model->getIncomeById($id_pembayaran);            
+            
+            $this->load->view('admin/ajax/get_data_pembayaran_view', $data);
+        } else if ($ajax_menu == 'edit_pembayaran') {
+            $id_pembayaran = $this->input->post('id_pembayaran');            
+            
+            $data['pembayaran'] = $this->Pembayaran_model->getIncomeById($id_pembayaran);
+            $data['menghuni'] = $this->Pembayaran_model->getAllMenghuni();
+            $data['jenis_status'] = $this->Pembayaran_model->getAllJenisStatusPembayaran();
+            
+            $this->load->view('admin/ajax/update_data_pembayaran_view', $data);        
         }
 
 

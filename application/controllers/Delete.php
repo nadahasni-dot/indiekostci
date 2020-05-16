@@ -95,6 +95,22 @@ class Delete extends CI_Controller {
 
 
 
+
+        // fungsi delete pembayaran berdasar id
+        public function delPembayaran($id){
+            $this->_verifyAccess('admin');
+            
+            $this->db->where('id_pembayaran', $id);
+            $this->db->delete('pembayaran');
+            
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Data Pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect(base_url('admin/pemasukan'));
+        }
+
+
+
+
     // fungsi validasi hak akses
     private function _verifyAccess($hak_akses){
         $level = $this->session->userdata('id_akses');

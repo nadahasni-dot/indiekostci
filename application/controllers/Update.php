@@ -144,30 +144,67 @@ class Update extends CI_Controller {
     }
 
 
+    // fungsi untuk update data pembayaran
+    public function updatePembayaran(){
+        $this->_verifyAccess('admin');
 
+        $id_pembayaran = $this->input->post('id');
+        $buktiPembayaran = $this->_uploadImage('bukti_baru');
 
+        // apabila foto profil tidak terpilih maka digunakan foto lama
+        if($buktiPembayaran == ""){
+            $buktiPembayaran = $this->input->post('bukti_lama');
+        }
 
+        $data = array(
+            'id_menghuni'           => $this->input->post('menghuni'),
+            'tanggal_pembayaran'    => $this->input->post('tanggal'),
+            'nilai_pembayaran'      => $this->input->post('nominal'),
+            'keterangan'            => $this->input->post('keterangan'),
+            'bukti_pembayaran'      => $buktiPembayaran,
+            'id_status'             => $this->input->post('status')
+        );                
 
-    // fungsi untukupload image
-    private function _uploadImage(){
-        // konfigurasi
-        $config['upload_path']          = './assets/img/';
-        $config['allowed_types']        = 'gif|jpg|png';
-        $config['encrypt_name']         = TRUE; //Enkripsi nama yang terupload
-        $config['overwrite']			= TRUE;
-        $config['max_size']             = 2048; // 1MB
-        $config['file_ext_tolower']     = TRUE;
+        // update pengeluaran di database
+        $this->load->model('Pembayaran_model');
         
-        $this->load->library('upload', $config);        
         
-        // bila berhasil
-        if ($this->upload->do_upload('foto_baru')) {            
-            // ambil nama file foto
-            return $this->upload->data("file_name");
+        if($this->Pembayaran_model->updatePembayaran($id_pembayaran, $data)){            
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Update Data Pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect(base_url('admin/pemasukan'));
+            
         }else{
-            return "";
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Update Data Pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect(base_url('admin/pemasukan'));
         }
     }
+
+
+
+  // fungsi untukupload image
+  private function _uploadImage($name){
+    // konfigurasi
+    $config['upload_path']          = './assets/img/';
+    $config['allowed_types']        = 'gif|jpg|png';
+    $config['encrypt_name']         = TRUE; //Enkripsi nama yang terupload
+    $config['overwrite']			= TRUE;
+    $config['max_size']             = 2048; // 1MB
+    $config['file_ext_tolower']     = TRUE;
+    
+    $this->load->library('upload', $config);        
+    
+    // bila berhasil
+    if ($this->upload->do_upload($name)) {            
+        // ambil nama file foto
+        return $this->upload->data("file_name");
+    }else{
+        return "";
+    }
+}
 
 
 

@@ -312,6 +312,56 @@
         });
     });
     </script>
+
+  <?php elseif($menu == 'pembayaran' && $subMenu == 'pemasukan'): ?>
+  <script>
+    $(document).ready(function () {
+
+      // untuk view data
+      $('#dataTable').on('click','.view_data', function () {
+        var id_pembayaran = $(this).attr('id');
+        console.log(id_pembayaran);
+
+        $.ajax({
+          url: "<?= base_url('admin/ajax'); ?>",
+          method: "post",
+          data: {
+            ajax_menu: 'get_pembayaran',
+            id_pembayaran: id_pembayaran
+          },
+          success: function (data) {
+            $('#detail_pembayaran').html(data);
+            $('#viewModal').modal();
+          }
+        });
+      });
+
+      // edit data
+      $('#dataTable').on('click','.edit_data', function () {
+        var $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+          return $(this).text();
+        }).get();
+
+        var id_pembayaran = data[1];
+        console.log(id_pembayaran);
+
+        $.ajax({
+          url: "<?= base_url('admin/ajax'); ?>",
+          method: "post",
+          data: {
+            ajax_menu: 'edit_pembayaran',
+            id_pembayaran: id_pembayaran
+          },
+          success: function (data) {
+            $('#detail_edit').html(data);
+            $('#updateModal').modal();
+          }
+        });
+      });
+    });
+  </script>
 <?php endif; ?>
 
 </body>

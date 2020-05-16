@@ -128,4 +128,66 @@ class Pembayaran_model extends CI_Model {
 
         return $income;
     }
+
+
+  // fungsi untuk mendapat data pemasukan terbaru
+  public function getAllIncome(){
+    $this->db->select('pembayaran.*, kamar.nomor_kamar, pengguna.nama_pengguna, jenis_status_pembayaran.nama_status_pembayaran');
+    $this->db->from('pembayaran');
+    $this->db->join('menghuni', 'pembayaran.id_menghuni = menghuni.id_menghuni');
+    $this->db->join('kamar', 'menghuni.id_kamar = kamar.id_kamar');
+    $this->db->join('pengguna', 'menghuni.id_pengguna = pengguna.id_pengguna');
+    $this->db->join('jenis_status_pembayaran', 'pembayaran.id_status = jenis_status_pembayaran.id_status');
+    $this->db->order_by('pembayaran.id_status', 'desc');
+    $this->db->order_by('pembayaran.tanggal_pembayaran', 'desc');
+
+    return $this->db->get()->result_array();
+  }
+
+
+
+  // menginput pembayaran ke database
+  public function inputPembayaran($data){
+    return $this->db->insert('pembayaran', $data);
+  }
+
+
+
+
+  public function getAllMenghuni(){
+    $this->db->select('*');
+    $this->db->from('menghuni');
+    $this->db->join('kamar', 'menghuni.id_kamar = kamar.id_kamar');
+    $this->db->join('pengguna', 'menghuni.id_pengguna = pengguna.id_pengguna');
+
+    return $this->db->get()->result_array();
+  }
+
+
+
+
+
+  // mengambil data jenis status pembayaran
+  public function getAllJenisStatusPembayaran(){
+    return $this->db->get('jenis_status_pembayaran')->result_array();
+  }
+
+  // fungsi untuk mendapat data pemasukan berdasarid
+  public function getIncomeById($id){
+    $this->db->select('pembayaran.*, kamar.nomor_kamar, pengguna.nama_pengguna, jenis_status_pembayaran.nama_status_pembayaran');
+    $this->db->from('pembayaran');
+    $this->db->join('menghuni', 'pembayaran.id_menghuni = menghuni.id_menghuni');
+    $this->db->join('kamar', 'menghuni.id_kamar = kamar.id_kamar');
+    $this->db->join('pengguna', 'menghuni.id_pengguna = pengguna.id_pengguna');
+    $this->db->join('jenis_status_pembayaran', 'pembayaran.id_status = jenis_status_pembayaran.id_status');
+    $this->db->where('pembayaran.id_pembayaran', $id);
+    
+    return $this->db->get()->row_array();
+  }
+
+  // fungsi untuk mengupdate pembayaran byId
+  public function updatePembayaran($id, $data){
+    $this->db->where('id_pembayaran', $id);
+    return $this->db->update('pembayaran', $data);
+  }
 }
