@@ -133,4 +133,20 @@ class Delete extends CI_Controller {
         }
 
     }
+
+
+
+
+
+        // fungsi delete pengeluaran berdasar id
+        public function delPengeluaran($id){
+            $this->_verifyAccess('admin');
+            
+            $this->db->where('id_pengeluaran', $id);
+            $this->db->delete('pengeluaran');
+            
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect(base_url('admin/pengeluaran'));
+        }
 }

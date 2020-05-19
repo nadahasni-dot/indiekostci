@@ -314,5 +314,44 @@ class Update extends CI_Controller {
     }
 
 
+    
 
+     // fungsi untuk update data pengeluaran
+     public function updatePengeluaran(){
+        $this->_verifyAccess('admin');
+
+        $id_pengeluaran = $this->input->post('id');
+        $buktiPengeluaran = $this->_uploadImage('bukti_baru');
+
+        // apabila foto profil tidak terpilih maka digunakan foto lama
+        if($buktiPengeluaran == ""){
+            $buktiPengeluaran = $this->input->post('bukti_lama');
+        }
+
+        $data = array(
+            'id_jenis_pengeluaran'  => $this->input->post('jenis'),
+            'tanggal_pengeluaran'   => $this->input->post('tanggal'),
+            'nilai_pengeluaran'     => $this->input->post('nominal'),
+            'nilai_pengeluaran'     => $this->input->post('nominal'),
+            'keterangan'            => $this->input->post('keterangan'),
+            'bukti_pengeluaran'     => $buktiPengeluaran
+        );                
+
+        // update pengeluaran di database
+        $this->load->model('Pengeluaran_model');
+        
+        
+        if($this->Pengeluaran_model->updatePengeluaran($id_pengeluaran, $data)){            
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Update Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect(base_url('admin/pengeluaran'));
+            
+        }else{
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Update Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect(base_url('admin/pengeluaran'));
+        }
+    }
 }

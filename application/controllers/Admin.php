@@ -583,6 +583,67 @@ class Admin extends CI_Controller {
 
 
 
+
+
+    // fungsi untuk menu pengeluaran
+    public function pengeluaran(){
+        $this->_verifyAccess();
+
+        $this->load->model('Pengeluaran_model');
+
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+        
+        $data['tittle'] = "Pengeluaran";
+        $data['menu'] = 'pembayaran';
+        $data['subMenu'] = 'pengeluaran';
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['pengeluaran'] = $this->Pengeluaran_model->getAllPengeluaran();
+        $data['jenis_pengeluaran'] = $this->Pengeluaran_model->getAllJenisPengeluaran();
+
+        $this->load->view('partial/admin_partial/header_admin.php', $data);
+        $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
+        $this->load->view('partial/admin_partial/topbar_admin.php', $data);
+        $this->load->view('admin/pengeluaran_view.php', $data);
+        $this->load->view('partial/admin_partial/footer_admin.php', $data);    
+    }
+
+
+
+
+
+
+    // fungsi untuk menambah pengeluaran baru
+    public function createPengeluaran(){
+        $this->_verifyAccess();
+
+        $this->load->model('Pengeluaran_model');
+
+        $data = array(
+            'id_jenis_pengeluaran'  => $this->input->post('jenis'),
+            'tanggal_pengeluaran'   => $this->input->post('tanggal'),
+            'nilai_pengeluaran'     => $this->input->post('nominal'),
+            'keterangan'            => $this->input->post('keterangan'),
+            'bukti_pengeluaran'     => $this->_uploadImage('bukti_pembayaran'),
+            'id_pengguna'           => $this->session->userdata('id_pengguna')
+        );
+
+        if($this->Pengeluaran_model->inputPengeluaran($data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menambah Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/pengeluaran');
+        }else{
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/pengeluaran');
+        }
+    }
+
+
+
         // menu settings profil
         public function settingsProfil(){
             $this->_verifyAccess();
@@ -723,6 +784,7 @@ class Admin extends CI_Controller {
 
         $this->load->model('Masterdata_model');
         $this->load->model('Pembayaran_model');
+        $this->load->model('Pengeluaran_model');
 
         $ajax_menu = $this->input->post('ajax_menu');        
 
@@ -786,6 +848,20 @@ class Admin extends CI_Controller {
             $data['jenis_status'] = $this->Pembayaran_model->getAllJenisStatusPembayaran();
             
             $this->load->view('admin/ajax/update_data_pembayaran_view', $data);        
+        } else if($ajax_menu == 'get_pengeluaran'){            
+            // ajax pada menu pengeluaran
+            $id_pengeluaran = $this->input->post('id_pengeluaran');
+
+            $data['pengeluaran'] = $this->Pengeluaran_model->getPengeluaranById($id_pengeluaran);
+
+            $this->load->view('admin/ajax/get_data_pengeluaran_view', $data);
+        } else if ($ajax_menu == 'edit_pengeluaran') {
+            $id_pengeluaran = $this->input->post('id_pengeluaran');
+            
+            $data['pengeluaran'] = $this->Pengeluaran_model->getPengeluaranById($id_pengeluaran);
+            $data['jenis_pengeluaran'] = $this->Pengeluaran_model->getAllJenisPengeluaran();
+            
+            $this->load->view('admin/ajax/update_data_pengeluaran_view', $data);        
         }
 
 
