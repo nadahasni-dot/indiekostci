@@ -29,7 +29,7 @@ if ( ! function_exists('verifyAccess')){
                     return false;
                 }
             }
-        } else {
+        } else if ($hak_akses == 'candidate'){
             if($level != 3){
                 if($level == 1){
                     redirect('admin');
