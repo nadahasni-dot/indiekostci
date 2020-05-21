@@ -1,16 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class Candidate extends CI_Controller {
 
     // constructor untuk class auth
     function __construct()
     {
         parent::__construct();        
         $this->load->library('form_validation');
+        $this->load->model('Candidate_model');
         $this->load->model('User_model');
         $this->load->helper('auth_helper');
-        verifyAccess('user');
+        verifyAccess('candidate');
     }
 
 
@@ -18,7 +19,7 @@ class User extends CI_Controller {
 
     // method untuk dashboard
     public function index(){
-        verifyAccess('user');
+        verifyAccess('candidate');
 
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
@@ -28,89 +29,59 @@ class User extends CI_Controller {
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
-        $this->load->view('partial/user_partial/header_user.php', $data);
-        $this->load->view('partial/user_partial/sidebar_user.php', $data);
-        $this->load->view('partial/user_partial/topbar_user.php', $data);
+        $this->load->view('partial/candidate_partial/header_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/sidebar_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
         
-        $this->load->view('partial/user_partial/footer_user.php', $data);  
+        $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
     }
-    
-    
-    
-    
-    // method untuk kamar
-    public function kamar(){
-        verifyAccess('user');
+
+    // method untuk booking
+    public function booking(){
+        verifyAccess('candidate');
 
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
 
-        $data['tittle'] = "Kamar Saya";
-        $data['menu'] = 'kamar';        
+        $data['tittle'] = "Booking Kamar";
+        $data['menu'] = 'booking';        
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
-        $this->load->view('partial/user_partial/header_user.php', $data);
-        $this->load->view('partial/user_partial/sidebar_user.php', $data);
-        $this->load->view('partial/user_partial/topbar_user.php', $data);
+        $this->load->view('partial/candidate_partial/header_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/sidebar_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
         
-        $this->load->view('partial/user_partial/footer_user.php', $data);  
+        $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
     }
-    
-    
-    
-    
 
-    // method untuk Pembayaran
-    public function pembayaran(){
-        verifyAccess('user');
 
-        $email = $this->session->userdata('email');
-        $id_akses = $this->session->userdata('id_akses');
 
-        $data['tittle'] = "Pembayaran";
-        $data['menu'] = 'pembayaran';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
-        $data['level'] = $this->User_model->getHakAksesById($id_akses);
-
-        $this->load->view('partial/user_partial/header_user.php', $data);
-        $this->load->view('partial/user_partial/sidebar_user.php', $data);
-        $this->load->view('partial/user_partial/topbar_user.php', $data);
-        
-        $this->load->view('partial/user_partial/footer_user.php', $data);  
-    }
-    
-    
-    
-    
-    
-    
-    // method untuk settings profil
+    // method untuk setting profil
     public function settingsProfil(){
-        verifyAccess('user');
+        verifyAccess('candidate');
 
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
 
-        $data['tittle'] = "Profil Saya";
+        $data['tittle'] = "Profil";
         $data['menu'] = 'settings_profil';        
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
-        $this->load->view('partial/user_partial/header_user.php', $data);
-        $this->load->view('partial/user_partial/sidebar_settings_user', $data);
-        $this->load->view('partial/user_partial/topbar_user.php', $data);
+        $this->load->view('partial/candidate_partial/header_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/sidebar_settings_candidate.php', $data);
+        $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
         
-        $this->load->view('partial/user_partial/footer_user.php', $data);  
+        $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
     }
-    
-    
-    
-    
-    
-    // method untuk rubah password
+
+
+
+
+    // method untuk setting profil
     public function settingsPassword(){
-        verifyAccess('user');
+        verifyAccess('candidate');        
 
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
@@ -131,11 +102,11 @@ class User extends CI_Controller {
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         if($this->form_validation->run() == false){
-            $this->load->view('partial/user_partial/header_user.php', $data);
-            $this->load->view('partial/user_partial/sidebar_settings_user.php', $data);
-            $this->load->view('partial/user_partial/topbar_user.php', $data);
-            $this->load->view('user/settings_password_view', $data);            
-            $this->load->view('partial/user_partial/footer_user.php', $data);  
+            $this->load->view('partial/candidate_partial/header_candidate.php', $data);
+            $this->load->view('partial/candidate_partial/sidebar_settings_candidate.php', $data);
+            $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
+            $this->load->view('candidate/settings_password_view', $data);  
+            $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
         } else {
             $password_lama = $this->input->post('pass_lama', true);
             $password_baru = $this->input->post('pass_baru', true);
@@ -151,18 +122,18 @@ class User extends CI_Controller {
                     //flash data berhasil
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil merubah password. Silahkan login kembali<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 
-                    redirect('user/settingspassword');
+                    redirect('candidate/settingspassword');
                 } else {
                     //flash data jika gagal
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal merubah password<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 
-                    redirect('user/settingspassword');
+                    redirect('candidate/settingspassword');
                 }
             } else {
                 //flash data jika gagal
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password lama anda salah<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 
-                redirect('user/settingspassword');
+                redirect('candidate/settingspassword');
             }
         }
     }
