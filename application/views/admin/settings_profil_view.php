@@ -18,7 +18,7 @@
                   }
                   ?>" alt="<?php echo $user['nama_pengguna']; ?>" class="img-thumbnail mx-auto d-block mb-3 rounded"
         						width="300px">
-        					<div class="table-respomsive pr-3">
+        					<div class="table-responsive pr-3">
         						<table class="table">
         							<tbody>
         								<tr>

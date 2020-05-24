@@ -31,7 +31,7 @@
                   if ($user['foto_pengguna'] == NULL):                  
                 ?>
 
-    						<img class="img-profile rounded-circle" src="<?= base_url('assets/img/none.ppng'); ?>">
+    						<img class="img-profile rounded-circle" src="<?= base_url('assets/img/none.png'); ?>">
     						<?php else: ?>
 
     						<img class="img-profile rounded-circle" src="<?= base_url('assets/img/').$user['foto_pengguna']; ?>">

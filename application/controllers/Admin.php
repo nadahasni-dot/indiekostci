@@ -9,6 +9,7 @@ class Admin extends CI_Controller {
         parent::__construct();        
         $this->load->library('form_validation');
         $this->load->model('User_model');
+        $this->load->helper('auth_helper');
     }
 
 
@@ -248,38 +249,92 @@ class Admin extends CI_Controller {
        redirect('Admin/dataKamar');
    }
 
-//    public function deleteMenghuni($id = null)
-//    {
-//        $this->load->model('menghuni_model');
-//        if (!isset($id)) show_404();
-
-//        if ($this->menghuni_model->delete_menghuni($id)) {
-//            redirect('Admin/menghuni');
-//        }
-//    }
 
 
+   public function menghuni()
+   {
+       verifyAccess('admin');
+
+       $email = $this->session->userdata('email');
+       $id_akses = $this->session->userdata('id_akses');
+       $this->load->model("Menghuni_model");
+       $data['tittle'] = "Data Menghuni";
+       $data['menu'] = 'kamar';
+       $data['subMenu'] = 'menghuni';
+       $data['user'] = $this->User_model->getUserByEmail($email);
+       $data['level'] = $this->User_model->getHakAksesById($id_akses);
+       $data['menghuni'] = $this->Menghuni_model->getAllMenghuni();
+       $data['belum_menghuni'] = $this->Menghuni_model->getBelumMenghuni();
+       $data['kamar_tersedia'] = $this->Menghuni_model->getKamarTersedia();
+       $this->load->view('partial/admin_partial/header_admin.php', $data);
+       $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
+       $this->load->view('partial/admin_partial/topbar_admin.php', $data);
+       $this->load->view('admin/menghuni_view.php', $data);
+       $this->load->view('partial/admin_partial/footer_admin.php', $data);
+   }
 
 
-//    public function menghuni()
-//    {
-//        $this->_verifyAccess();
 
-//        $email = $this->session->userdata('email');
-//        $id_akses = $this->session->userdata('id_akses');
-//        $this->load->model("menghuni_model");
-//        $data['tittle'] = "Data Menghuni";
-//        $data['menu'] = 'kamar';
-//        $data['subMenu'] = 'menghuni';
-//        $data['user'] = $this->User_model->getUserByEmail($email);
-//        $data['level'] = $this->User_model->getHakAksesById($id_akses);
-//        $data['menghuni'] = $this->menghuni_model->get_view();
-//        $this->load->view('partial/admin_partial/header_admin.php', $data);
-//        $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
-//        $this->load->view('partial/admin_partial/topbar_admin.php', $data);
-//        $this->load->view('admin/menghuni_view.php', $data);
-//        $this->load->view('partial/admin_partial/footer_admin.php', $data);
-//    }
+
+   // input data layanan baru
+   public function createMenghuni(){
+    verifyAccess('admin');
+
+    $this->load->model('Menghuni_model');
+    $this->load->model('Pembayaran_model');
+
+    $kamar = $this->input->post('kamar');
+    $penghuni = $this->input->post('penghuni');
+    $tanggal = $this->input->post('tanggal');
+    $nominal = $this->input->post('nominal');
+    $keterangan = $this->input->post('keterangan');
+    $bukti = $this->_uploadImage('bukti_bayar');
+
+    $data_menghuni = array(
+        'id_kamar' => $kamar,
+        'id_pengguna' => $penghuni,
+        'id_pengguna' => $penghuni,
+        'tanggal_masuk' => $tanggal
+    );
+
+    if($this->Menghuni_model->insertMenghuni($data_menghuni)){
+        $data = $this->Menghuni_model->getMenghuniByIdPengguna($penghuni);
+        $id_menghuni = $data['id_menghuni'];
+
+        $data_update_status = array(
+            'id_akses' => 2
+        );
+        // update hak akses ke penghuni
+        $this->db->where('id_pengguna', $penghuni);
+        $this->db->update('pengguna', $data_update_status);
+
+        $data_pembayaran = array(
+            'id_menghuni' => $id_menghuni,
+            'tanggal_pembayaran' => $tanggal,
+            'nilai_pembayaran' => $nominal,
+            'bukti_pembayaran' => $bukti,
+            'keterangan' => $keterangan,
+            'id_status' => 1,
+        );
+
+        if($this->Pembayaran_model->inputPembayaran($data_pembayaran)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Mendaftarkan Penghuni ke Kamar dan input pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect('admin/menghuni');
+        }else{
+            //flash data jika gagal
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Data Menghuni<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/menghuni');
+        }
+    } else {
+        //flash data jika gagal
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menambah Data Menghuni<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        
+        redirect('admin/menghuni');
+    }
+}
 
 
 
@@ -780,11 +835,12 @@ class Admin extends CI_Controller {
 
     // fungsi untuk menjalankan ajax
     public function ajax(){
-        $this->_verifyAccess();
+        verifyAccess('admin');
 
         $this->load->model('Masterdata_model');
         $this->load->model('Pembayaran_model');
         $this->load->model('Pengeluaran_model');
+        $this->load->model('Menghuni_model');
 
         $ajax_menu = $this->input->post('ajax_menu');        
 
@@ -862,6 +918,21 @@ class Admin extends CI_Controller {
             $data['jenis_pengeluaran'] = $this->Pengeluaran_model->getAllJenisPengeluaran();
             
             $this->load->view('admin/ajax/update_data_pengeluaran_view', $data);        
+        } else if ($ajax_menu == 'get_menghuni') {
+            // ajax menu menghuni
+            $id_menghuni = $this->input->post('id_menghuni');
+
+            $data['menghuni'] = $this->Menghuni_model->getMenghuniById($id_menghuni);
+
+            $this->load->view('admin/ajax/get_data_menghuni_view', $data);
+        } else if ($ajax_menu == 'edit_menghuni') {
+            $id_menghuni = $this->input->post('id_menghuni');            
+
+            $data['menghuni'] = $this->Menghuni_model->getMenghuniById($id_menghuni);
+            $data['kamar_tersedia'] = $this->Menghuni_model->getKamarTersedia();
+            $data['belum_menghuni'] = $this->Menghuni_model->getBelumMenghuni();
+
+            $this->load->view('admin/ajax/update_data_menghuni_view', $data);
         }
 
 

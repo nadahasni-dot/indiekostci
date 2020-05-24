@@ -2,82 +2,56 @@
 
 class menghuni_model extends CI_Model
 {
-    //GET PRODUCT BY PACKAGE ID
-    function get_booking_by_id($id){
-        $this->db->select('booking.*, kamar.nomor_kamar,pengguna.nama_pengguna');
-        $this->db->from('booking');
-        $this->db->join('kamar', 'booking.id_kamar=kamar.id_kamar');
-        $this->db->join('pengguna', 'booking.id_pengguna=pengguna.id_pengguna');
-        $this->db->where('booking.id_booking',$id);
-        $query = $this->db->get();
-        return $query;
+    public function getAllMenghuni(){
+        $query = "SELECT kamar.nomor_kamar, pengguna.nama_pengguna, menghuni.tanggal_masuk, menghuni.id_menghuni, pengguna.id_pengguna FROM menghuni, kamar, pengguna WHERE menghuni.id_kamar = kamar.id_kamar AND menghuni.id_pengguna = pengguna.id_pengguna";
+
+        return $this->db->query($query)->result_array();
     }
- 
-    //READ
-    function get_view(){
-        $this->db->select('kamar.nomor_kamar, pengguna.nama_pengguna, menghuni.tanggal_masuk,
-        menghuni.id_menghuni, pengguna.id_pengguna');
-        $this->db->from('menghuni');
-        $this->db->join('kamar', 'menghuni.id_kamar=kamar.id_kamar');
-        $this->db->join('pengguna', 'menghuni.id_pengguna=pengguna.id_pengguna');
-        
-        $query = $this->db->get();
-        return $query;
-    }
- 
-    /**CREATE
-    function create_package($package,$product){
-        $this->db->trans_start();
-            //INSERT TO PACKAGE
-            date_default_timezone_set("Asia/Bangkok");
-            $data  = array(
-                'package_name' => $package,
-                'package_created_at' => date('Y-m-d H:i:s') 
-            );
-            $this->db->insert('package', $data);
-            //GET ID PACKAGE
-            $package_id = $this->db->insert_id();
-            $result = array();
-                foreach($product AS $key => $val){
-                     $result[] = array(
-                      'detail_package_id'   => $package_id,
-                      'detail_product_id'   => $_POST['product'][$key]
-                     );
-                }      
-            //MULTIPLE INSERT TO DETAIL TABLE
-            $this->db->insert_batch('detail', $result);
-        $this->db->trans_complete();
-    }
- 
-     
-    // UPDATE
-    /**function update_booking($id,$package,$product){
-        $this->db->trans_start();
-            //UPDATE TO PACKAGE
-            $data  = array(
-                'package_name' => $package
-            );
-            $this->db->where('package_id',$id);
-            $this->db->update('package', $data);
-             
-            //DELETE DETAIL PACKAGE
-            $this->db->delete('detail', array('detail_package_id' => $id));
- 
-            $result = array();
-                foreach($product AS $key => $val){
-                     $result[] = array(
-                      'detail_package_id'   => $id,
-                      'detail_product_id'   => $_POST['product_edit'][$key]
-                     );
-                }      
-            //MULTIPLE INSERT TO DETAIL TABLE
-            $this->db->insert_batch('detail', $result);
-        $this->db->trans_complete();
-    }*/
- 
-    // DELETE
-    function delete_menghuni($id){
+
+    public function getKamarTersedia(){
+        $query = "SELECT kamar.nomor_kamar, kamar.id_kamar, 
+                    CASE
+                        WHEN kamar.id_kamar = (SELECT menghuni.id_kamar FROM menghuni WHERE menghuni.id_kamar = kamar.id_kamar)
+                    THEN
+                        (SELECT pengguna.nama_pengguna FROM pengguna, menghuni WHERE pengguna.id_pengguna = menghuni.id_pengguna AND  menghuni.id_kamar = kamar.id_kamar)
+                    ELSE
+                        'Belum dihuni'
+                    END AS penghuni
                     
-        return $this->db->delete('menghuni', array('id_menghuni' => $id));        
+                FROM kamar";
+
+        return $this->db->query($query)->result_array();
+    }
+
+
+    public function getBelumMenghuni(){
+        $query = "SELECT pengguna.id_pengguna, pengguna.nama_pengguna
+                FROM pengguna
+                LEFT JOIN menghuni ON pengguna.id_pengguna = menghuni.id_pengguna
+                WHERE menghuni.id_pengguna IS NULL AND pengguna.id_akses = 3";
+        
+        return $this->db->query($query)->result_array();
+    }
+    
+    public function getMenghuniById($id_menghuni){
+        $query = "SELECT menghuni.id_menghuni, menghuni.tanggal_masuk, menghuni.tanggal_keluar, pengguna.nama_pengguna, kamar.id_kamar, kamar.nomor_kamar, tipe_kamar.nama_tipe, kamar.kapasitas_kamar, pengguna.id_pengguna, pengguna.nama_pengguna, pengguna.foto_pengguna, kamar.luas_kamar, kamar.lantai_kamar, layanan.nama_layanan, layanan.harga_bulanan AS harga_layanan, (kamar.harga_bulanan + layanan.harga_bulanan) AS harga_bulanan_total, kamar.denda, kamar.harga_bulanan, kamar.deskripsi_kamar FROM pengguna, kamar, menghuni, tipe_kamar, layanan WHERE pengguna.id_pengguna = menghuni.id_pengguna AND kamar.id_kamar = menghuni.id_kamar AND kamar.id_tipe = tipe_kamar.id_tipe AND kamar.id_layanan = layanan.id_layanan AND menghuni.id_menghuni = '$id_menghuni'";
+
+        return $this->db->query($query)->row_array();
+    }
+
+    public function insertMenghuni($data){
+        return $this->db->insert('menghuni', $data);
+    }
+
+    public function getMenghuniByIdPengguna($id){
+        $this->db->where('id_pengguna', $id);
+        return $this->db->get('menghuni')->row_array();
+    }
+
+
+
+    public function updateMenghuni($id_menghuni, $data){
+        $this->db->where('id_menghuni', $id_menghuni);
+        return $this->db->update('menghuni', $data);
     }
 }

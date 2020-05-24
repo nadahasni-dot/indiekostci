@@ -6,7 +6,8 @@ class Delete extends CI_Controller {
     // constructor untuk class auth
     function __construct()
     {
-        parent::__construct();        
+        parent::__construct();
+        $this->load->helper('auth_helper');
 
         // mengecek apakah ada session
         $level = $this->session->userdata('id_akses');
@@ -138,15 +139,54 @@ class Delete extends CI_Controller {
 
 
 
-        // fungsi delete pengeluaran berdasar id
-        public function delPengeluaran($id){
-            $this->_verifyAccess('admin');
-            
-            $this->db->where('id_pengeluaran', $id);
-            $this->db->delete('pengeluaran');
-            
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-    
-            redirect(base_url('admin/pengeluaran'));
+    // fungsi delete pengeluaran berdasar id
+    public function delPengeluaran($id){
+        $this->_verifyAccess('admin');
+        
+        $this->db->where('id_pengeluaran', $id);
+        $this->db->delete('pengeluaran');
+        
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+        redirect(base_url('admin/pengeluaran'));
+    }
+
+
+
+
+
+
+    // fungsi delete menghuni
+    public function deleteMenghuni($id_menghuni, $id_pengguna){
+        verifyAccess('admin');
+
+        $this->db->where('id_menghuni', $id_menghuni);
+        // menghapus menghuni
+        if($this->db->delete('menghuni')){
+            $data = array(
+                'id_akses' => 3
+            );
+
+            $this->db->where('id_pengguna', $id_pengguna);
+            //update hak akses ke calon penghuni
+            if($this->db->update('pengguna', $data)){
+
+                $this->db->where('id_pengguna', $id_pengguna);
+                // menghapus data booking
+                if($this->db->delete('booking')){
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Menghuni dan mengeluarkan penghuni dari kamar<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+                    redirect('admin/menghuni');
+                }
+            }else{
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menghapus data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+                redirect('admin/menghuni');
+            }
+        }else{
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Gagal Menghapus Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/menghuni');
         }
+    }
 }

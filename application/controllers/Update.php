@@ -7,6 +7,7 @@ class Update extends CI_Controller {
     function __construct()
     {
         parent::__construct();        
+        $this->load->helper('auth_helper');
 
         // mengecek apakah ada session
         $level = $this->session->userdata('id_akses');
@@ -311,6 +312,38 @@ class Update extends CI_Controller {
             redirect('admin/settingsinfokost');
         }
         
+    }
+
+
+
+
+    public function updateMenghuni(){
+        verifyAccess('admin');
+
+        $this->load->model('Menghuni_model');
+
+        $id_menghuni = $this->input->post('id');
+        $id_kamar = $this->input->post('kamar');
+        $id_pengguna = $this->input->post('penghuni');
+        $tanggal = $this->input->post('tanggal');
+
+        $data = array(            
+            'id_kamar'      => $id_kamar,
+            'id_pengguna'   => $id_pengguna,
+            'tanggal_masuk' => $tanggal
+        );
+
+        if($this->Menghuni_model->updateMenghuni($id_menghuni, $data)){
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Menghuni<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/menghuni');
+        } else {
+            // jika gagal            
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Memperbarui Data Menghuni<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/menghuni');
+        }
     }
 
 

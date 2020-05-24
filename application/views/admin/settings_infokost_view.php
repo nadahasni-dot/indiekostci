@@ -17,7 +17,7 @@
                       echo $info_kost['foto_kost']; 
                   }
                   ?>" alt="<?php echo $info_kost['nama_kost']; ?>" class="img-fluid mx-auto d-block mb-3 rounded">
-                  <div class="table-respomsive pr-3">
+                  <div class="table-responsive pr-3">
                     <table class="table">
                       <tbody>
                         <tr>

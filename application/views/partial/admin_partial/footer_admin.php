@@ -412,6 +412,60 @@
         });
       });
   </script>
+<?php elseif($menu == 'kamar' && $subMenu == 'menghuni'): ?>
+<script>
+  $(document).ready(function () {
+
+    // untuk view data
+    $('#dataTable').on('click','.view_data', function () {
+      var id_menghuni = $(this).attr('id');
+      console.log(id_menghuni);
+
+      $.ajax({
+        url: "<?= base_url('admin/ajax'); ?>",
+        method: "post",
+        data: {
+          ajax_menu: 'get_menghuni',
+          id_menghuni: id_menghuni
+        },
+        success: function (data) {
+          $('#detail_menghuni').html(data);
+          $('#viewModal').modal();
+        }
+      });
+    });
+
+    // edit data
+    $('#dataTable').on('click','.edit_data', function () {
+      var $tr = $(this).closest('tr');          
+
+      var data = $tr.children("td").map(function () {
+        return $(this).text();
+      }).get();
+
+      var id_menghuni = data[1];
+      console.log(id_menghuni);
+
+      var judul = "Edit Data Menghuni id: ";
+      var stringJudul = judul + id_menghuni
+
+      $('#editJudul').html(stringJudul);
+
+      $.ajax({
+        url: "<?= base_url('admin/ajax'); ?>",
+        method: "post",      
+        data: {
+          ajax_menu: 'edit_menghuni',
+          id_menghuni: id_menghuni
+        },
+        success: function (data) {
+          $('#detail_edit').html(data);
+          $('#updateModal').modal();
+        }
+      });
+    });
+  });
+</script>
 <?php endif; ?>
 
 </body>
