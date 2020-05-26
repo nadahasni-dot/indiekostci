@@ -72,7 +72,7 @@ class Candidate extends CI_Controller {
         $this->load->view('partial/candidate_partial/header_candidate.php', $data);
         $this->load->view('partial/candidate_partial/sidebar_settings_candidate.php', $data);
         $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
-        
+        $this->load->view('candidate/settings_profil_view', $data);
         $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
     }
 
@@ -135,6 +135,25 @@ class Candidate extends CI_Controller {
 
                 redirect('candidate/settingspassword');
             }
+        }
+    }
+
+
+
+
+
+    // untuk fungsi ajax
+    public function ajax(){
+        verifyAccess('candidate');
+
+        $ajax_menu = $this->input->post('ajax_menu');
+
+        if ($ajax_menu == 'settings_profil') {
+            $id_pengguna = $this->input->post('id_pengguna');            
+
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
+
+            $this->load->view('user/ajax/update_profil_settings', $data);
         }
     }
 }

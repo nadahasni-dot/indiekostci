@@ -59,9 +59,30 @@
 <!-- Page level plugins -->
 <script src="<?= base_url('assets'); ?>/vendor/chart.js/Chart.min.js"></script>
 
-<script>
+<?php if($menu == 'settings_profil'): ?>
+    <script>
+      $(document).ready(function () {
 
-</script>
+        // untuk view data
+        $('.edit_data').on('click', function () {
+          var id_pengguna = $(this).attr('id');
+          console.log(id_pengguna);
+          $.ajax({
+            url: "<?= base_url('candidate/ajax'); ?>",
+            method: "post",
+            data: {
+              ajax_menu: 'settings_profil',
+              id_pengguna: id_pengguna
+            },
+            success: function (data) {
+              $('#detail_edit').html(data);
+              $('#updateModal').modal();
+            }
+          });
+        });
+      });
+    </script>
+  <?php endif; ?>
 
 </body>
 

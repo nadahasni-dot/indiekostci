@@ -190,7 +190,7 @@ class Update extends CI_Controller {
   private function _uploadImage($name){
     // konfigurasi
     $config['upload_path']          = './assets/img/';
-    $config['allowed_types']        = 'gif|jpg|png';
+    $config['allowed_types']        = 'gif|jpg|jpeg|png|JPG|JPEG|PNG';
     $config['encrypt_name']         = TRUE; //Enkripsi nama yang terupload
     $config['overwrite']			= TRUE;
     $config['max_size']             = 2048; // 1MB
@@ -235,9 +235,7 @@ class Update extends CI_Controller {
     }
 
     // fungsi untuk update data profil
-    public function updateProfil(){
-        $this->_verifyAccess('admin');
-
+    public function updateProfil(){        
         $id_pengguna = $this->input->post('id_pengguna');
         $fotoProfil = $this->_uploadImage('foto_baru');
 
@@ -263,10 +261,25 @@ class Update extends CI_Controller {
         $this->load->model('User_model');
         $this->User_model->updateUser($id_pengguna, $data);       
         
-        //flash data jika berhasil
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Profil<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+        // mengarahkan kembali ke hak akses masing-masing user
+        $user = $this->User_model->getUserById($id_pengguna);
 
-        redirect(base_url('admin/settingsprofil'));
+        if ($user['id_akses'] == 1) {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Profil<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect('admin/settingsprofil');
+        } else if ($user['id_akses'] == 2) {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Profil<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect('user/settingsprofil');
+        } else if ($user['id_akses'] == 3) {
+            //flash data jika berhasil
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Memperbarui Data Profil<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+    
+            redirect('candidate/settingsprofil');
+        }
     }
 
 

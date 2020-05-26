@@ -100,7 +100,7 @@ class User extends CI_Controller {
         $this->load->view('partial/user_partial/header_user.php', $data);
         $this->load->view('partial/user_partial/sidebar_settings_user', $data);
         $this->load->view('partial/user_partial/topbar_user.php', $data);
-        
+        $this->load->view('user/settings_profil_view.php', $data);
         $this->load->view('partial/user_partial/footer_user.php', $data);  
     }
     
@@ -164,6 +164,24 @@ class User extends CI_Controller {
 
                 redirect('user/settingspassword');
             }
+        }
+    }
+
+
+
+
+    // untuk fungsi ajax
+    public function ajax(){
+        verifyAccess('user');
+
+        $ajax_menu = $this->input->post('ajax_menu');
+
+        if ($ajax_menu == 'settings_profil') {
+            $id_pengguna = $this->input->post('id_pengguna');            
+
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
+
+            $this->load->view('user/ajax/update_profil_settings', $data);
         }
     }
 }
