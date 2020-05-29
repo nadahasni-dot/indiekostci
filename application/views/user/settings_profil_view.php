@@ -8,7 +8,7 @@
 				<h4 class="card-title">Profil</h4>
 				<p class="card-text">Detail data diri anda</p>
 				<?= $this->session->flashdata('message') ?>
-				<div class="container-fluid pr-3">
+				<div class="container-fluid">
 					<img src="<?= base_url('assets') ?>/img/<?php
         if ($user['foto_pengguna'] == NULL) {
             echo 'none.png';
@@ -17,7 +17,7 @@
         }
         ?>" alt="<?php echo $user['nama_pengguna']; ?>" class="img-thumbnail mx-auto d-block mb-3 rounded"
 						width="300px">
-					<div class="table-respomsive pr-3">
+					<div class="table-responsive">
 						<table class="table">
 							<tbody>
 								<tr>

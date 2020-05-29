@@ -45,6 +45,15 @@
 	})
 
 
+	$(function(){
+      $(".bg-login-image").css({"background-image": "url(<?= base_url('assets/img/'); echo $info_kost['foto_kost']; ?>)"});
+    })
+
+
+	$(function(){
+		$(".bg-password-image").css({"background-image": "url(<?= base_url('assets/img/'); echo $info_kost['foto_kost']; ?>)"})
+	})
+
 	$(document).ready(function () {
 		$('#submit').click(function (event) {
 
