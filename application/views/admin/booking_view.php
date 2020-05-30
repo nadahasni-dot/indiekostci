@@ -138,7 +138,7 @@
      ?>" alt="<?php echo $row->tanggal_booking; ?>" class="img-thumbnail mx-auto d-block mb-3 rounded"
       width="300px"> </a>
 
-  <div class="table-respomsive">
+  <div class="table-responsive">
     <table class="table">
       <tbody>
         <tr>

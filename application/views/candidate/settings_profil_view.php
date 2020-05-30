@@ -1,6 +1,3 @@
-<!-- Begin Page Content -->
-<div class="container-fluid">
-	
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-3">
 		<div class="card col-12">
@@ -96,7 +93,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 <!-- /.container-fluid -->
 
 <!-- update Modal -->

@@ -32,7 +32,7 @@ class Candidate extends CI_Controller {
         $this->load->view('partial/candidate_partial/header_candidate.php', $data);
         $this->load->view('partial/candidate_partial/sidebar_candidate.php', $data);
         $this->load->view('partial/candidate_partial/topbar_candidate.php', $data);
-        
+        $this->load->view('candidate/dashboard_view.php', $data);
         $this->load->view('partial/candidate_partial/footer_candidate.php', $data);  
     }
 

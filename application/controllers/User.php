@@ -31,7 +31,7 @@ class User extends CI_Controller {
         $this->load->view('partial/user_partial/header_user.php', $data);
         $this->load->view('partial/user_partial/sidebar_user.php', $data);
         $this->load->view('partial/user_partial/topbar_user.php', $data);
-        
+        $this->load->view('user/dashboard_view.php', $data);
         $this->load->view('partial/user_partial/footer_user.php', $data);  
     }
     
