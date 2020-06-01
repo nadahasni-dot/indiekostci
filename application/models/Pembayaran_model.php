@@ -190,4 +190,45 @@ class Pembayaran_model extends CI_Model {
     $this->db->where('id_pembayaran', $id);
     return $this->db->update('pembayaran', $data);
   }
+
+
+
+
+  public function getPembayaranUser($id_pengguna){
+    $query = "SELECT *, DATE_FORMAT(CURRENT_DATE(), '%M %Y') AS bulan FROM pembayaran, kamar, pengguna, menghuni, jenis_status_pembayaran
+    WHERE menghuni.id_kamar = kamar.id_kamar AND pembayaran.id_status = jenis_status_pembayaran.id_status AND
+      menghuni.id_pengguna = pengguna.id_pengguna AND
+      pembayaran.id_menghuni = menghuni.id_menghuni AND pengguna.id_pengguna = $id_pengguna AND
+      MONTH(pembayaran.tanggal_pembayaran) = MONTH(CURRENT_DATE())";
+
+    return $this->db->query($query)->row_array();
+  }
+
+
+
+
+  public function getHargaKamarUser($id_pengguna){
+    $query = "SELECT *, DATE_FORMAT(CURRENT_DATE(), '%M %Y') AS bulan, (kamar.harga_bulanan + layanan.harga_bulanan) AS harga_total, CURRENT_DATE() AS tanggal_sekarang FROM kamar, pengguna, menghuni, layanan
+            WHERE menghuni.id_kamar = kamar.id_kamar  AND kamar.id_layanan = layanan.id_layanan AND
+              menghuni.id_pengguna = pengguna.id_pengguna AND pengguna.id_pengguna = $id_pengguna";
+
+    return $this->db->query($query)->row_array();
+  }
+
+
+
+  public function getBulanTahunPembayaran(){
+    $query = "SELECT DATE_FORMAT(CURRENT_DATE(), '%Y') as tahun, DATE_FORMAT(CURRENT_DATE(), '%m') as bulan";
+
+    return $this->db->query($query)->row_array();
+  }
+
+
+
+
+  public function getBatasPembayaran($tahun, $bulan){
+    $query = "SELECT DATEDIFF(CURRENT_DATE(),'$tahun-$bulan-10') AS selisih";
+
+    return $this->db->query($query)->row_array();
+  }
 }

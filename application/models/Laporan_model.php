@@ -86,4 +86,23 @@ class Laporan_model extends CI_Model {
 
         return $this->db->query($query)->result_array();
     }
+
+
+
+
+    public function getPembayaranById($id_pembayaran){
+        $query = "SELECT *, DATE_FORMAT(pembayaran.tanggal_pembayaran, '%d %M %Y') AS tanggal_bayar FROM pembayaran, menghuni, kamar, pengguna, jenis_status_pembayaran
+            WHERE pembayaran.id_menghuni = menghuni.id_menghuni AND
+            menghuni.id_kamar = kamar.id_kamar AND
+            menghuni.id_pengguna = pengguna.id_pengguna AND
+            pembayaran.id_status = jenis_status_pembayaran.id_status AND pembayaran.id_pembayaran = '$id_pembayaran'";
+
+        return $this->db->query($query)->row_array();
+    }
+
+
+
+    public function getPemilikKost(){
+        return $this->db->get_where('pengguna', ['id_akses' => 1])->row_array();
+    }
 }

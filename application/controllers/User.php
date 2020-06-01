@@ -24,7 +24,7 @@ class User extends CI_Controller {
         $id_akses = $this->session->userdata('id_akses');
 
         $data['tittle'] = "Dashboard";
-        $data['menu'] = 'dashboard';        
+        $data['menu'] = 'dashboard';
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
@@ -45,15 +45,18 @@ class User extends CI_Controller {
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
 
+        $this->load->model('Kamar_model');
+
         $data['tittle'] = "Kamar Saya";
         $data['menu'] = 'kamar';        
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['kamar'] = $this->Kamar_model->getKamar($data['user']['id_pengguna']);
 
         $this->load->view('partial/user_partial/header_user.php', $data);
         $this->load->view('partial/user_partial/sidebar_user.php', $data);
         $this->load->view('partial/user_partial/topbar_user.php', $data);
-        
+        $this->load->view('user/kamar_view', $data);
         $this->load->view('partial/user_partial/footer_user.php', $data);  
     }
     
@@ -68,15 +71,25 @@ class User extends CI_Controller {
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
 
+        $this->load->model('Pembayaran_model');
+
         $data['tittle'] = "Pembayaran";
         $data['menu'] = 'pembayaran';        
         $data['user'] = $this->User_model->getUserByEmail($email);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['pembayaran'] = $this->Pembayaran_model->getPembayaranUser($data['user']['id_pengguna']);
+
+        // var_dump($data['pembayaran']); die;
+        $data['harga_kamar'] = $this->Pembayaran_model->getHargaKamarUser($data['user']['id_pengguna']);
+        $data['waktu_pembayaran'] = $this->Pembayaran_model->getBulanTahunPembayaran();
+
+        $waktu = $data['waktu_pembayaran'];
+        $data['batas_pembayaran'] = $this->Pembayaran_model->getBatasPembayaran($waktu['tahun'], $waktu['bulan']);
 
         $this->load->view('partial/user_partial/header_user.php', $data);
         $this->load->view('partial/user_partial/sidebar_user.php', $data);
         $this->load->view('partial/user_partial/topbar_user.php', $data);
-        
+        $this->load->view('user/pembayaran_view', $data);
         $this->load->view('partial/user_partial/footer_user.php', $data);  
     }
     
@@ -165,6 +178,27 @@ class User extends CI_Controller {
                 redirect('user/settingspassword');
             }
         }
+    }
+
+
+
+
+    public function buktiPembayaran($id){
+        verifyAccess('user');
+
+        $email = $this->session->userdata('email');
+        $id_akses = $this->session->userdata('id_akses');
+
+        $this->load->model('Laporan_model');
+
+        $data['tittle'] = "Profil Saya";        
+        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['level'] = $this->User_model->getHakAksesById($id_akses);
+        $data['pembayaran'] = $this->Laporan_model->getPembayaranById($id);
+        $data['kost'] = $this->Laporan_model->getInfoKost();
+        $data['pemilik'] = $this->Laporan_model->getPemilikKost();
+
+        $this->load->view('user/bukti_pembayaran_view', $data);
     }
 
 
