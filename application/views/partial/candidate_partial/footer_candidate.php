@@ -82,6 +82,49 @@
         });
       });
     </script>
+  <?php elseif ($menu == 'booking'): ?>
+    <script>
+    	$(document).ready(function () {
+
+    		// untuk view data
+    		$('.view_data').on('click', function () {
+    			var id_kamar = $(this).attr('id');
+    			console.log(id_kamar);
+
+    			$.ajax({
+    				url: "<?= base_url('candidate/ajax'); ?>",
+    				method: "post",
+    				data: {
+              ajax_menu: 'get_kamar',
+    					id_kamar: id_kamar
+    				},
+    				success: function (data) {
+    					$('#detail_kamar').html(data);
+    					$('#viewModal').modal();
+    				}
+    			});
+    		});
+
+    		// edit data
+    		$('.booking_kamar').on('click', function () {
+    			var id_kamar = $(this).attr('id');
+    			console.log(id_kamar);
+
+    			$.ajax({
+    				url: "<?= base_url('candidate/ajax'); ?>",
+    				method: "post",
+    				data: {
+              ajax_menu: 'booking_kamar',
+    					id_kamar: id_kamar
+    				},
+    				success: function (data) {
+    					$('#booking_data').html(data);
+    					$('#bookingKamar').modal();
+    				}
+    			});
+    		});
+    	});
+    </script>
   <?php endif; ?>
 
 </body>

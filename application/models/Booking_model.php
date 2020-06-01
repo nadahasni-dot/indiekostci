@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class booking_model extends CI_Model
+class Booking_model extends CI_Model
 {
     //GET PRODUCT BY PACKAGE ID
     function get_booking_by_id($id){
@@ -82,4 +82,33 @@ class booking_model extends CI_Model
         return $this->db->delete('booking', array('id_booking' => $id));
         
     }
+
+
+    public function getBookingByIdUser($id_pengguna){
+        $query = "SELECT * FROM kamar, booking, pengguna WHERE booking.id_kamar = kamar.id_kamar AND booking.id_pengguna = pengguna.id_pengguna AND pengguna.id_pengguna = '$id_pengguna'";
+
+        return $this->db->query($query)->row_array();
+    }
+
+
+    public function getPembayaranBookingByUser($id_pengguna) {
+        $query = "SELECT *, (kamar.harga_bulanan + layanan.harga_bulanan) AS total_bayar FROM kamar, booking, pengguna, layanan WHERE booking.id_kamar = kamar.id_kamar AND booking.id_pengguna = pengguna.id_pengguna AND kamar.id_layanan = layanan.id_layanan AND pengguna.id_pengguna = '$id_pengguna'";
+
+        return $this->db->query($query)->row_array();
+    }
+
+
+
+    public function getKamarTersedia(){
+        $query = "SELECT kamar.id_kamar, kamar.nomor_kamar, kamar.foto_kamar, tipe_kamar.nama_tipe, layanan.nama_layanan, layanan.harga_bulanan AS harga_layanan, kamar.harga_bulanan, (kamar.harga_bulanan + layanan.harga_bulanan) AS total_harga, kamar.deskripsi_kamar, kamar.kapasitas_kamar, kamar.luas_kamar, kamar.lantai_kamar FROM kamar
+            LEFT JOIN menghuni ON menghuni.id_kamar = kamar.id_kamar
+            LEFT JOIN booking ON kamar.id_kamar = booking.id_kamar
+                INNER JOIN tipe_kamar ON kamar.id_tipe = tipe_kamar.id_tipe
+                INNER JOIN layanan ON kamar.id_layanan = layanan.id_layanan
+
+                WHERE menghuni.id_kamar IS NULL AND booking.id_kamar IS NULL
+                ORDER BY kamar.nomor_kamar ASC";
+        
+        return $this->db->query($query)->result_array();
+    }    
 }
