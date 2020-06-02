@@ -466,6 +466,55 @@
     });
   });
 </script>
+<?php elseif($menu == 'kamar' && $subMenu == 'booking_kamar'): ?>
+  <script>
+        $(document).ready(function () {
+
+          // untuk view data
+          $('#dataTable').on('click','.view_data', function () {
+            var id_booking = $(this).attr('id');
+            console.log(id_booking);
+
+            $.ajax({
+              url: "<?= base_url('admin/ajax'); ?>",
+              method: "post",
+              data: {
+                ajax_menu: 'get_booking',
+                id_booking: id_booking
+              },
+              success: function (data) {
+                $('#detail_kamar').html(data);
+                $('#viewModal').modal();
+              }
+            });
+          });
+
+          // edit data
+          $('#dataTable').on('click','.edit_data', function () {
+            var $tr = $(this).closest('tr');
+
+            var data = $tr.children("td").map(function () {
+              return $(this).text();
+            }).get();
+
+            var id_booking = data[1];
+            console.log(id_booking);
+
+            $.ajax({
+              url: "<?= base_url('admin/ajax'); ?>",
+              method: "post",
+              data: {
+                ajax_menu: 'update_booking',
+                id_booking: id_booking
+              },
+              success: function (data) {
+                $('#detail_edit').html(data);
+                $('#updateModal').modal();
+              }
+            });
+          });
+        });
+      </script>
 <?php endif; ?>
 
 </body>

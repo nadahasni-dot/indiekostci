@@ -397,7 +397,86 @@ class Update extends CI_Controller {
             //flash data jika gagal
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Update Data Pengeluaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
             
-            redirect(base_url('admin/pengeluaran'));
+            redirect('admin/pengeluaran');
+        }
+    }
+
+
+
+
+    public function updateBooking() {
+        $id_booking = $this->input->post('id_booking');
+        $status = $this->input->post('status');
+
+        $this->load->model('Booking_model');
+
+        if ($status == 'belum dikonfirmasi') {
+            //flash data jika tidak ada perubahan dalam status booking
+            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Tidak ada perubahan status konfirmasi booking<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/bookingkamar');
+        }
+
+        $data = array(
+            'status_booking' => $status
+        );
+
+        if ( $this->db->update('booking', $data, ['id_booking' => $id_booking]) ) {
+
+            $booking = $this->Booking_model->get_booking_by_id($id_booking)->row_array();
+
+            $id_kamar = $booking['id_kamar'];
+            $id_pengguna = $booking['id_pengguna'];
+            $tanggal_booking = $booking['tanggal_booking'];
+
+            $data = array(
+                'id_kamar' => $id_kamar,
+                'id_pengguna' => $id_pengguna,
+                'tanggal_masuk' => $tanggal_booking
+            );
+
+            if ( $this->db->insert('menghuni', $data) ) {
+
+                $this->db->select('*');
+                $this->db->from('booking');
+                $this->db->join('kamar', 'booking.id_kamar = kamar.id_kamar');
+                $this->db->join('menghuni', 'menghuni.id_kamar = kamar.id_kamar');
+                $this->db->where('id_booking', $id_booking);
+
+                $menghuni = $this->db->get()->row_array();
+
+                $data = array(
+                    'id_menghuni' => $menghuni['id_menghuni'],
+                    'tanggal_pembayaran' => $menghuni['tanggal_booking'],
+                    'nilai_pembayaran' => $menghuni['nilai_booking'],
+                    'bukti_pembayaran' => $menghuni['bukti_booking'],
+                    'keterangan' => 'Pembayaran booking kamar no.'.$menghuni['nomor_kamar'].' tanggal: '.$menghuni['tanggal_booking'],
+                    'id_status' => 1
+                );
+
+                if ( $this->db->insert('pembayaran', $data) ) {
+
+                    $id_pengguna = $booking['id_pengguna'];
+
+                    $data = array(
+                        'id_akses' => 2
+                    );
+
+                    if ( $this->db->update('pengguna', $data, ['id_pengguna' => $id_pengguna]) ) {
+                        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil update data booking, mendaftarkan penghuni ke kamar, dan menginput pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/bookingkamar');
+                    } else {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal update data booking, mendaftarkan penghuni ke kamar, dan menginput pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/bookingkamar');
+                    }
+                }
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal mengupdate booking<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            
+            redirect('admin/bookingkamar');
         }
     }
 }

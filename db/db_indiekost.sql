@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Bulan Mei 2020 pada 15.34
+-- Waktu pembuatan: 02 Jun 2020 pada 12.32
 -- Versi server: 10.1.40-MariaDB
 -- Versi PHP: 7.3.5
 
@@ -37,6 +37,14 @@ CREATE TABLE `booking` (
   `bukti_booking` varchar(255) NOT NULL,
   `status_booking` enum('belum dikonfirmasi','sudah dikonfirmasi','','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `booking`
+--
+
+INSERT INTO `booking` (`id_booking`, `id_kamar`, `id_pengguna`, `tanggal_booking`, `nilai_booking`, `bukti_booking`, `status_booking`) VALUES
+(2, 5, 14, '2020-06-01', 300000, 'dde797a709961171cfc1d25e696d5da0.jpg', ''),
+(4, 6, 15, '2020-06-02', 300000, 'd0c8bac9e150cd7b37fdcd1c6a99e215.jpg', 'sudah dikonfirmasi');
 
 -- --------------------------------------------------------
 
@@ -165,12 +173,12 @@ INSERT INTO `kamar` (`id_kamar`, `nomor_kamar`, `id_tipe`, `luas_kamar`, `lantai
 (7, 104, 1, '4x4', '1', 1, 'Kamar nomor satu', 2, 10000, 65000, 300000, 330000, 5000, '5e166d4179726.jpeg', 0),
 (8, 105, 1, '4x4', '1', 1, 'asdasdasdasdsad', 1, 0, 0, 300000, 0, 5000, '5e192d0d9e4d6.jpg', 0),
 (9, 106, 1, '4x4', '1', 1, 'asdadasdadasadds', 2, 0, 0, 400000, 0, 5000, '5e1a901df0b7d.jpeg', 0),
-(11, 112, 1, '4x4', '1', 1, 'qwewqeqwe', 2, 0, 0, 300000, 0, 5000, '5e26fdb5ef3dc.jpg', 0),
-(12, 113, 1, '4x4', '1', 1, 'deqdqdqwdwqdqwd', 2, 0, 0, 200000, 0, 5000, '68a528c6caa182ca2d313d8f39067ccf.jpg', 0),
-(14, 107, 1, '4x4', '1', 1, 'fegopjf ewiqdjhpw ewjp', 2, 0, 0, 400000, 0, 5000, '5e2791b9e2671.jpeg', 0),
-(15, 108, 1, '4x4', '1', 1, 'wqwq weq qwefdaa qw', 2, 0, 0, 400000, 0, 5000, '5e2791d2e2c12.jpg', 1),
-(16, 109, 1, '4x4', '1', 1, 'qwewqqw', 2, 0, 0, 400000, 0, 5000, '5e2791efdf3c0.jpg', 0),
-(20, 110, 1, '4x4', '1', 1, 'Tes Deskripsi', 2, 0, 0, 400000, 0, 5000, '4690ad78bd726891588d20db1ca3acb6.jpg', 0);
+(11, 112, 1, '4x4', '1', 1, 'qwewqeqwe', 2, 0, 0, 300000, 0, 5000, 'a217152f35de32ad37b3dcee6e1fa393.jpg', 0),
+(12, 113, 1, '4x4', '1', 1, 'deqdqdqwdwqdqwd', 2, 0, 0, 200000, 0, 5000, '987111ea3af2ba864c19b225d9a6422f.jpg', 0),
+(14, 107, 1, '4x4', '1', 1, 'fegopjf ewiqdjhpw ewjp', 2, 0, 0, 400000, 0, 5000, '36335150ee1f69222b037e6796605080.jpg', 0),
+(15, 108, 1, '4x4', '1', 1, 'wqwq weq qwefdaa qw', 2, 0, 0, 400000, 0, 5000, '62de68dcf1efe940de8e11c986b68dc1.jpg', 1),
+(16, 109, 1, '4x4', '1', 1, 'qwewqqw', 2, 0, 0, 400000, 0, 5000, '224337fddcf30bc5f57f3d84b23ba205.jpg', 0),
+(20, 110, 1, '4x4', '1', 1, 'Tes Deskripsi', 2, 0, 0, 400000, 0, 5000, '3ebac18627eb64c0d701a19ecaaa0b55.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -215,8 +223,10 @@ CREATE TABLE `menghuni` (
 --
 
 INSERT INTO `menghuni` (`id_menghuni`, `id_kamar`, `id_pengguna`, `tanggal_masuk`, `tanggal_keluar`) VALUES
-(1, 3, 11, '2020-04-29', '0000-00-00'),
-(3, 15, 13, '2020-04-05', '0000-00-00');
+(3, 15, 13, '2020-04-05', '0000-00-00'),
+(5, 4, 11, '2020-06-01', '0000-00-00'),
+(6, 5, 14, '2020-06-01', '0000-00-00'),
+(7, 6, 15, '2020-06-02', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -239,14 +249,12 @@ CREATE TABLE `pembayaran` (
 --
 
 INSERT INTO `pembayaran` (`id_pembayaran`, `id_menghuni`, `tanggal_pembayaran`, `nilai_pembayaran`, `bukti_pembayaran`, `keterangan`, `id_status`) VALUES
-(7, 1, '2020-04-29', 200000, '', '', 1),
-(8, 1, '2020-03-12', 200000, '', '', 1),
-(9, 1, '2020-02-13', 600000, '', '', 1),
 (11, 3, '2020-05-01', 300000, '', '', 1),
 (12, 3, '2020-04-01', 300000, '', '', 1),
-(14, 1, '2020-05-01', 250000, '707661ff753972cef33b763a1222d03d.jpg', 'Pembayaran bulan mei', 2),
-(15, 1, '2020-01-09', 250000, 'a9d9e70ea75c44d82316fad29f0695bb.jpg', 'Pembayaran bulan Januari', 1),
-(16, 3, '2020-01-01', 300000, '8d70c04bc7d700b8142904d03866e7d7.jpg', 'Pembayaran bulan januari', 1);
+(16, 3, '2020-01-01', 300000, '8d70c04bc7d700b8142904d03866e7d7.jpg', 'Pembayaran bulan januari', 1),
+(22, 5, '2020-06-01', 300000, '0cd2ef34f7855063885da045797722f3.jpg', 'Mendaftarkan ciloq ciliq ke kamar 101 oleh admin', 1),
+(23, 6, '2020-06-01', 300000, 'dde797a709961171cfc1d25e696d5da0.jpg', 'Pembayaran Booking kamar no.102 tanggal: 2020-06-01', 1),
+(24, 7, '2020-06-02', 300000, 'd0c8bac9e150cd7b37fdcd1c6a99e215.jpg', 'Pembayaran booking kamar no.103 tanggal: 2020-06-02', 1);
 
 -- --------------------------------------------------------
 
@@ -269,9 +277,9 @@ CREATE TABLE `pengeluaran` (
 --
 
 INSERT INTO `pengeluaran` (`id_pengeluaran`, `id_jenis_pengeluaran`, `tanggal_pengeluaran`, `nilai_pengeluaran`, `keterangan`, `bukti_pengeluaran`, `id_pengguna`) VALUES
-(9, 3, '2020-05-01', 200000, 'Pembayaran Bulan Mei 2020 dikala pandemi Covid-19', '1b4564a7fd86ee7fd788ecc538c429fc.jpg', 7),
-(10, 1, '2020-05-01', 500000, 'Dipotong Subsidi pemerintah dikala pandemi covid-19', 'ac54425cd548ad7597929617c11cb5d1.jpg', 7),
-(11, 2, '2020-05-01', 300000, 'PBB dikala pandemi covid 19', 'f83bade367f34bc5d545c882cc11c174.jpg', 7);
+(9, 3, '2020-05-01', 200000, 'Pembayaran Bulan Mei 2020 dikala pandemi Covid-19', '48e832ede0cf3e2acf1c200f288e901d.jpg', 7),
+(10, 1, '2020-05-01', 500000, 'Dipotong Subsidi pemerintah dikala pandemi covid-19', 'e3dff886a913420cbf08af90a5f0f4a1.jpg', 7),
+(11, 2, '2020-05-01', 300000, 'PBB dikala pandemi covid 19', '2d45239d601e100669edbf7266e0bfdf.jpg', 7);
 
 -- --------------------------------------------------------
 
@@ -302,9 +310,11 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`id_pengguna`, `nama_pengguna`, `alamat_pengguna`, `provinsi_pengguna`, `kota_pengguna`, `telepon_pengguna`, `email_pengguna`, `kelamin_pengguna`, `tanggal_lahir_pengguna`, `no_ktp_pengguna`, `password`, `id_akses`, `foto_pengguna`, `is_active`, `time_created`) VALUES
-(7, 'Abdul Jali', 'Jl Baturaden Gg 10 No. 7', 'Jawa Timur', 'Jember', '082335783552', 'nadasthing@gmail.com', 'Pria', '1999-12-15', '000988166627120913', '$2y$10$usEzsIVTtzMO.IYrJ/MCju4VYkE8I7pt.Hw4hqjedtVIwc2GLxeRi', 1, '5e1a943eeae2e.jpg', 1, 1587647284),
-(11, 'Ciloq Ciliq', 'Jl. Diponegoro VII 73', 'Jawa Timur', 'Jember', '085735678159', 'ciloqciliq@gmail.com', 'Pria', '2020-05-04', '3509191412990007', '$2y$10$1DvEVo0TOhUFJPad1G3IvOloHucu2sFLTAdq5l9NRNufS7na1NYMu', 2, 'c3758e542abce51cfd1ac7a1f292d212.jpg', 1, 1587714593),
-(13, 'Ntsana Canteq Sekila', 'Jl berdua bersamaku', 'Jawa Timur', 'Jember', '08123456789', 'ntsana@gmail.com', 'Wanita', '2020-05-11', '1777288199129012', '$2y$10$1DvEVo0TOhUFJPad1G3IvOloHucu2sFLTAdq5l9NRNufS7na1NYMu', 2, '72724240987d5e26723855c272971df8.jpg', 1, 1587648461);
+(7, 'Abdul Jali', 'Jl Baturaden Gg 10 No. 7', 'Jawa Timur', 'Jember', '082335783552', 'nadasthing@gmail.com', 'Pria', '1999-12-15', '000988166627120913', '$2y$10$KsnsY8QiuzYbdOXeP2yTA.2MdawXr4mr74ORtZJpPMWmjBFwfYvxu', 1, '5e1a943eeae2e.jpg', 1, 1587647284),
+(11, 'Ciloq Ciliq', 'Jl. Diponegoro VII 73', 'Jawa Timur', 'Jember', '085735678159', 'ciloqciliq@gmail.com', 'Wanita', '2020-05-04', '3509191412990007', '$2y$10$Tn3bc/gQgqfEzAyGN3jklOWe8SdI.YloNWcepR68Anx9I.vl/uM8e', 2, '45ded3a228621d361d70759aea6ca94c.jpg', 1, 1587714593),
+(13, 'Ntsana Canteq Sekila', 'Jl berdua bersamaku', 'Jawa Timur', 'Jember', '08123456789', 'ntsana@gmail.com', 'Wanita', '2020-05-11', '1777288199129012', '$2y$10$1DvEVo0TOhUFJPad1G3IvOloHucu2sFLTAdq5l9NRNufS7na1NYMu', 2, '72724240987d5e26723855c272971df8.jpg', 1, 1587648461),
+(14, 'Maudy Bawa Kemana', 'Jl Jalan Melulu Asek 69', 'Jawa Barat', 'Jakarta', '08123456789', 'maudybawakemana@gmail.com', 'Wanita', '2003-06-01', '3509191412990007', '$2y$10$67R.ktgBwzTc6ihCHFNuxeHrnjjVwhN5R0YWGGrjnC21xRX4EjPS6', 2, '11d64412761ec71b11f1dba46f2b22b8.jpeg', 1, 1587648461),
+(15, 'Siti Zubaedah', 'Jl Kediri no 70', 'Jawa Timur', 'Kediri', '08123456789', 'sitizubaedah@gmail.com', 'Wanita', '2000-01-01', '3650921992891', '$2y$10$67R.ktgBwzTc6ihCHFNuxeHrnjjVwhN5R0YWGGrjnC21xRX4EjPS6', 2, '1017a83aa5fbe55fd7612ae8325fb670.jpg', 1, 1587648461);
 
 -- --------------------------------------------------------
 
@@ -450,7 +460,7 @@ ALTER TABLE `user_token`
 -- AUTO_INCREMENT untuk tabel `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `id_booking` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_booking` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `hak_akses`
@@ -468,7 +478,7 @@ ALTER TABLE `info_kost`
 -- AUTO_INCREMENT untuk tabel `jenis_pengeluaran`
 --
 ALTER TABLE `jenis_pengeluaran`
-  MODIFY `id_jenis_pengeluaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_jenis_pengeluaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis_status_pembayaran`
@@ -492,13 +502,13 @@ ALTER TABLE `layanan`
 -- AUTO_INCREMENT untuk tabel `menghuni`
 --
 ALTER TABLE `menghuni`
-  MODIFY `id_menghuni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_menghuni` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengeluaran`
@@ -510,7 +520,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT untuk tabel `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `tipe_kamar`

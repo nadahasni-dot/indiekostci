@@ -28,10 +28,14 @@
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
-	
+
 	<!-- Custom styles for this template-->
 	<link href="<?= base_url('assets/css/sb-admin-2.css'); ?>" rel="stylesheet">
 
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon'); ?>/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon'); ?>/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon'); ?>/favicon-16x16.png">
+	<link rel="manifest" href="<?= base_url('assets/favicon'); ?>/site.webmanifest">
 </head>
 
 <body class="bg-gradient-primary">

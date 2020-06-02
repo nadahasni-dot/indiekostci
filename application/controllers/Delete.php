@@ -184,9 +184,27 @@ class Delete extends CI_Controller {
                 redirect('admin/menghuni');
             }
         }else{
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Gagal Menghapus Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menghapus Data<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 
             redirect('admin/menghuni');
+        }
+    }
+
+
+
+
+
+    public function deleteBooking($id_booking) {
+        verifyAccess('admin');
+
+        if ( $this->db->delete('booking', ['id_booking' => $id_booking]) ) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil Menghapus Data Booking<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/bookingkamar');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal Menghapus Data Booking<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('admin/bookingkamar');
         }
     }
 }

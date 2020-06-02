@@ -50,32 +50,6 @@ class Booking_model extends CI_Model
         $this->db->trans_complete();
     }
  
-     
-    // UPDATE
-    /**function update_booking($id,$package,$product){
-        $this->db->trans_start();
-            //UPDATE TO PACKAGE
-            $data  = array(
-                'package_name' => $package
-            );
-            $this->db->where('package_id',$id);
-            $this->db->update('package', $data);
-             
-            //DELETE DETAIL PACKAGE
-            $this->db->delete('detail', array('detail_package_id' => $id));
- 
-            $result = array();
-                foreach($product AS $key => $val){
-                     $result[] = array(
-                      'detail_package_id'   => $id,
-                      'detail_product_id'   => $_POST['product_edit'][$key]
-                     );
-                }      
-            //MULTIPLE INSERT TO DETAIL TABLE
-            $this->db->insert_batch('detail', $result);
-        $this->db->trans_complete();
-    }*/
- 
     // DELETE
     function delete_booking($id){
        

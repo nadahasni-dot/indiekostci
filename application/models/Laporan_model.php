@@ -105,4 +105,12 @@ class Laporan_model extends CI_Model {
     public function getPemilikKost(){
         return $this->db->get_where('pengguna', ['id_akses' => 1])->row_array();
     }
+
+
+
+    public function getBulanTahun(){
+        $query = "SELECT DATE_FORMAT(CURRENT_DATE(), '%Y') as tahun, DATE_FORMAT(CURRENT_DATE(), '%m') as bulan";
+    
+        return $this->db->query($query)->row_array();
+      }
 }

@@ -20,7 +20,7 @@ class Admin extends CI_Controller {
     public function index(){
         $this->_verifyAccess();
 
-        $this->load->model('Pembayaran_model');
+        $this->load->model('Pembayaran_model');        
 
         $email = $this->session->userdata('email');
         $id_akses = $this->session->userdata('id_akses');
@@ -126,7 +126,7 @@ class Admin extends CI_Controller {
        $data['subMenu'] = 'booking_kamar';
        $data['user'] = $this->User_model->getUserByEmail($email);
        $data['level'] = $this->User_model->getHakAksesById($id_akses);
-       $data['booking'] = $this->booking_model->get_view();
+       $data['booking'] = $this->booking_model->get_view()->result_array();
        $this->load->view('partial/admin_partial/header_admin.php', $data);
        $this->load->view('partial/admin_partial/sidebar_admin.php', $data);
        $this->load->view('partial/admin_partial/topbar_admin.php', $data);
@@ -933,6 +933,22 @@ class Admin extends CI_Controller {
             $data['belum_menghuni'] = $this->Menghuni_model->getBelumMenghuni();
 
             $this->load->view('admin/ajax/update_data_menghuni_view', $data);
+        } else if ($ajax_menu == 'get_booking') {
+            $id_booking = $this->input->post('id_booking');
+
+            $this->load->model('Booking_model');
+
+            $data['booking'] = $this->Booking_model->get_booking_by_id($id_booking)->row_array();
+            
+            $this->load->view('admin/ajax/get_booking_view', $data);
+        } else if ($ajax_menu == 'update_booking') {
+            $id_booking = $this->input->post('id_booking');
+
+            $this->load->model('Booking_model');
+
+            $data['booking'] = $this->Booking_model->get_booking_by_id($id_booking)->row_array();
+            
+            $this->load->view('admin/ajax/update_booking_view', $data);
         }
 
 
