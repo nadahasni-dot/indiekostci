@@ -55,7 +55,7 @@
         }
         ?>" alt="<?php echo $pembayaran['tanggal_pembayaran']; ?>" class="img-thumbnail mx-auto d-block mb-3 rounded"
         width="300px">
-      <div class="table-respomsive pr-3">
+      <div class="table-responsive pr-3">
         <table class="table">
           <tbody>
             <tr>
@@ -112,6 +112,7 @@
  <div class="card col-12 mb-3">
   <div class="card-body">
     <h4 class="card-title">Pembayaran</h4>
+    <?= $this->session->flashdata('message'); ?>
     <p class="card-text">Anda belum melakukan pembayaran kamar no. <?php echo $harga_kamar['nomor_kamar']; ?> bulan <?php echo $harga_kamar['bulan']; ?></p>
     <p class="font-weight-bold text-danger">Lakukan pembayaran sebelum Tanggal (10 <?php echo $harga_kamar['bulan']; ?>)</p>
     <div class="container-fluid pr-3">
@@ -123,7 +124,7 @@
         }
         ?>" alt="<?php echo $pembayaran['tanggal_pembayaran']; ?>" class="img-thumbnail mx-auto d-block mb-3 rounded"
         width="300px"> -->
-      <div class="table-respomsive pr-3">
+      <div class="table-responsive pr-3">
         <table class="table">
           <tbody>
             <tr>
@@ -148,7 +149,7 @@
             </tr>                                            
           </tbody>
         </table>
-        <form action="../../actions/process-insert.php" method="POST" enctype="multipart/form-data">
+        <form action="<?= base_url('user/createpembayaran'); ?>" method="POST" enctype="multipart/form-data">
 
               <div class="form-group">                          
                 <input value="<?php echo ($harga_kamar['harga_total']+$totalDenda); ?>" type="hidden" class="form-control" id="nominal" name="nominal"
@@ -159,7 +160,7 @@
                   aria-describedby="status" placeholder="Masukkan nominal pembayaran" required>
               </div>
               <div class="form-group">                          
-                <input value="<?php echo $harga_kamar['id_menghuni'] ?>" type="hidden" class="form-control" id="menghuni" name="menghuni"
+                <input value="<?php echo $harga_kamar['id_menghuni'] ?>" type="hidden" class="form-control" id="menghuni" name="id_menghuni"
                   aria-describedby="nominal" placeholder="Masukkan nominal pembayaran" required>
               </div>
               <div class="form-group">
@@ -175,7 +176,7 @@
               </div>
               <div class="form-group">
                 <label for="profil">Bukti Pembayaran</label>
-                <input value="" type="file" class="form-control-file" id="profil" name="profil"
+                <input value="" type="file" class="form-control-file" id="profil" name="bukti_pembayaran"
                   aria-describedby="profil" accept="image/*" required>
               </div>
               <button type="submit" name="submitPembayaran" class="btn btn-primary"

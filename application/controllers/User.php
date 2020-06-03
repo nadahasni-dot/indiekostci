@@ -92,6 +92,39 @@ class User extends CI_Controller {
         $this->load->view('user/pembayaran_view', $data);
         $this->load->view('partial/user_partial/footer_user.php', $data);  
     }
+
+
+
+
+    public function createPembayaran() {
+        $bukti_pembayaran = $this->_uploadImage('bukti_pembayaran');
+
+        if ($bukti_pembayaran == '' || $bukti_pembayaran == null) {
+            //flash data gambar tidak sesuai
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal melakukan pembayaran. Pastikan ukuran bukti pembayaran tidak lebih dari 2MB. Format gambar yang didukung .gif .jpg .jpeg .png<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('user/pembayaran');
+        }
+
+        $data = array(
+            'id_menghuni' => $this->input->post('id_menghuni'),
+            'tanggal_pembayaran' => $this->input->post('tanggal'),
+            'nilai_pembayaran' => $this->input->post('nominal'),
+            'keterangan' => $this->input->post('keterangan'),
+            'bukti_pembayaran' => $bukti_pembayaran,
+            'id_status' => 2
+        );
+
+        if ($this->db->insert('pembayaran', $data)) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil melakukan pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('user/pembayaran');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal melakukan pembayaran<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+
+            redirect('user/pembayaran');
+        }
+    }
     
     
     
@@ -181,6 +214,25 @@ class User extends CI_Controller {
     }
 
 
+    private function _uploadImage($name){
+        // konfigurasi
+        $config['upload_path']          = './assets/img/';
+        $config['allowed_types']        = 'gif|jpg|jpeg|png';
+        $config['encrypt_name']         = TRUE; //Enkripsi nama yang terupload
+        $config['overwrite']			= TRUE;
+        $config['max_size']             = 2048; // 2MB
+        $config['file_ext_tolower']     = TRUE;
+        
+        $this->load->library('upload', $config);        
+        
+        // bila berhasil
+        if ($this->upload->do_upload($name)) {            
+            // ambil nama file foto
+            return $this->upload->data("file_name");
+        }else{
+            return "";
+        }
+    }
 
 
     public function buktiPembayaran($id){
