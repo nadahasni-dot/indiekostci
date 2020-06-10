@@ -22,13 +22,13 @@ class Admin extends CI_Controller {
 
         $this->load->model('Pembayaran_model');        
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Dashboard";
         $data['menu'] = 'dashboard';
         $data['subMenu'] = '';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['pendapatanByBulan'] = $this->Pembayaran_model->getIncomeMonthly();        
         $data['pendapatanThisMonth'] = $this->Pembayaran_model->getIncomeThisMonth();        
@@ -53,13 +53,13 @@ class Admin extends CI_Controller {
     public function penghuni(){
         $this->_verifyAccess();
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Penghuni";
         $data['menu'] = 'penghuni';
         $data['subMenu'] = '';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['penghuni'] = $this->User_model->getAllPenghuni();
 
@@ -118,13 +118,13 @@ class Admin extends CI_Controller {
    {
        $this->_verifyAccess();
 
-       $email = $this->session->userdata('email');
+       $id_pengguna = $this->session->userdata('id_pengguna');
        $id_akses = $this->session->userdata('id_akses');
        $this->load->model("booking_model");
        $data['tittle'] = "Booking Kamar";
        $data['menu'] = 'kamar';
        $data['subMenu'] = 'booking_kamar';
-       $data['user'] = $this->User_model->getUserByEmail($email);
+       $data['user'] = $this->User_model->getUserById($id_pengguna);
        $data['level'] = $this->User_model->getHakAksesById($id_akses);
        $data['booking'] = $this->booking_model->get_view()->result_array();
        $this->load->view('partial/admin_partial/header_admin.php', $data);
@@ -149,13 +149,13 @@ class Admin extends CI_Controller {
    {
        $this->_verifyAccess();
 
-       $email = $this->session->userdata('email');
+       $id_pengguna = $this->session->userdata('id_pengguna');
        $id_akses = $this->session->userdata('id_akses');
        $this->load->model("dataKamar_model");
        $data['tittle'] = "Data Kamar";
        $data['menu'] = 'kamar';
        $data['subMenu'] = 'data_kamar';
-       $data['user'] = $this->User_model->getUserByEmail($email);
+       $data['user'] = $this->User_model->getUserById($id_pengguna);
        $data['level'] = $this->User_model->getHakAksesById($id_akses);
        $data['dataKamar'] = $this->dataKamar_model->get_view();
        $data['dataTipe'] = $this->dataKamar_model->getTipeKamar()->result_array();
@@ -255,13 +255,13 @@ class Admin extends CI_Controller {
    {
        verifyAccess('admin');
 
-       $email = $this->session->userdata('email');
+       $id_pengguna = $this->session->userdata('id_pengguna');
        $id_akses = $this->session->userdata('id_akses');
        $this->load->model("Menghuni_model");
        $data['tittle'] = "Data Menghuni";
        $data['menu'] = 'kamar';
        $data['subMenu'] = 'menghuni';
-       $data['user'] = $this->User_model->getUserByEmail($email);
+       $data['user'] = $this->User_model->getUserById($id_pengguna);
        $data['level'] = $this->User_model->getHakAksesById($id_akses);
        $data['menghuni'] = $this->Menghuni_model->getAllMenghuni();
        $data['belum_menghuni'] = $this->Menghuni_model->getBelumMenghuni();
@@ -345,13 +345,13 @@ class Admin extends CI_Controller {
 
         $this->load->model('Laporan_model');
         
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Laporan | Laba Rugi";
         $data['menu'] = 'laporan';
         $data['subMenu'] = 'laba_rugi';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['tahun_pembayaran'] = $this->Laporan_model->getTahunPembayaran();
         
@@ -368,13 +368,13 @@ class Admin extends CI_Controller {
         
         $this->load->model('Laporan_model');
         
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Laporan | Pengeluaran";
         $data['menu'] = 'laporan';
         $data['subMenu'] = 'laporan_pengeluaran';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['tahun_pembayaran'] = $this->Laporan_model->getTahunPembayaran();
 
@@ -396,13 +396,13 @@ class Admin extends CI_Controller {
 
         $this->load->model('Masterdata_model');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Master | Data Layanan";
         $data['menu'] = 'masterdata';
         $data['subMenu'] = 'data_layanan';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);        
         $data['data_layanan'] = $this->Masterdata_model->getAllLayanan();
 
@@ -453,13 +453,13 @@ class Admin extends CI_Controller {
     
         $this->load->model('Masterdata_model');
     
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Master | Data jenis pengeluaran";
         $data['menu'] = 'masterdata';
         $data['subMenu'] = 'data_jenis_pengeluaran';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);        
         $data['data_jenis_pengeluaran'] = $this->Masterdata_model->getAllJenisPengeluaran();
     
@@ -476,13 +476,13 @@ class Admin extends CI_Controller {
         {
             $this->_verifyAccess();
     
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
             $id_akses = $this->session->userdata('id_akses');
             $this->load->model("dataTipeKamar_model");
             $data['tittle'] = "Data Tipe Kamar";
             $data['menu'] = 'masterdata';
             $data['subMenu'] = 'data_tipe_kamar';
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['level'] = $this->User_model->getHakAksesById($id_akses);
             $data['tipe'] = $this->dataTipeKamar_model->get_view()->result_array();
     
@@ -585,13 +585,13 @@ class Admin extends CI_Controller {
     
             $this->load->model('Pembayaran_model');
     
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
             $id_akses = $this->session->userdata('id_akses');
             
             $data['tittle'] = "Pemasukan";
             $data['menu'] = 'pembayaran';
             $data['subMenu'] = 'pemasukan';
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['level'] = $this->User_model->getHakAksesById($id_akses);
             $data['pembayaran'] = $this->Pembayaran_model->getAllIncome();
             $data['menghuni'] = $this->Pembayaran_model->getAllMenghuni();
@@ -646,13 +646,13 @@ class Admin extends CI_Controller {
 
         $this->load->model('Pengeluaran_model');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
         
         $data['tittle'] = "Pengeluaran";
         $data['menu'] = 'pembayaran';
         $data['subMenu'] = 'pengeluaran';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['pengeluaran'] = $this->Pengeluaran_model->getAllPengeluaran();
         $data['jenis_pengeluaran'] = $this->Pengeluaran_model->getAllJenisPengeluaran();
@@ -703,14 +703,14 @@ class Admin extends CI_Controller {
         public function settingsProfil(){
             $this->_verifyAccess();
     
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
             $id_akses = $this->session->userdata('id_akses');
     
             $this->load->model('Settings_model');
     
             $data['title'] = "Pengeluaran";
             $data['menu'] = 'profil';        
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['level'] = $this->User_model->getHakAksesById($id_akses);        
             
             $this->load->view('partial/admin_partial/admin_settings/header_settings_admin', $data);
@@ -726,14 +726,14 @@ class Admin extends CI_Controller {
         public function settingsInfoKost(){
             $this->_verifyAccess();
     
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
             $id_akses = $this->session->userdata('id_akses');
     
             $this->load->model('Welcome_model');
     
             $data['title'] = "Informasi Kost";
             $data['menu'] = 'info_kost';        
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['level'] = $this->User_model->getHakAksesById($id_akses);
             $data['info_kost'] = $this->Welcome_model->getInfoKost();        
             
@@ -751,7 +751,7 @@ class Admin extends CI_Controller {
         public function settingsPassword(){
             $this->_verifyAccess();            
     
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
             $id_akses = $this->session->userdata('id_akses');
     
             $this->load->model('Settings_model');
@@ -766,7 +766,7 @@ class Admin extends CI_Controller {
                 
             $data['title'] = "Rubah Password";
             $data['menu'] = 'rubah_pass';        
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
             if($this->form_validation->run() == false){
@@ -881,11 +881,11 @@ class Admin extends CI_Controller {
             $this->load->view('admin/ajax/update_data_profil_view', $data);    
         } else if ($ajax_menu == 'edit_info_kost'){
             $id_kost = $this->input->post('id_kost');
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
 
             $this->load->model('Settings_model');
 
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
 
             $data['info_kost'] = $this->Settings_model->getInfoKostById($id_kost);
             $this->load->view('admin/ajax/update_data_infokost_view', $data);    

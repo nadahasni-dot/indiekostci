@@ -20,12 +20,13 @@ class User extends CI_Controller {
     public function index(){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $data['tittle'] = "Dashboard";
         $data['menu'] = 'dashboard';
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         $this->load->view('partial/user_partial/header_user.php', $data);
@@ -42,14 +43,15 @@ class User extends CI_Controller {
     public function kamar(){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Kamar_model');
 
         $data['tittle'] = "Kamar Saya";
         $data['menu'] = 'kamar';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['kamar'] = $this->Kamar_model->getKamar($data['user']['id_pengguna']);
 
@@ -68,18 +70,17 @@ class User extends CI_Controller {
     public function pembayaran(){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Pembayaran_model');
 
         $data['tittle'] = "Pembayaran";
         $data['menu'] = 'pembayaran';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
-        $data['pembayaran'] = $this->Pembayaran_model->getPembayaranUser($data['user']['id_pengguna']);
-
-        // var_dump($data['pembayaran']); die;
+        $data['pembayaran'] = $this->Pembayaran_model->getPembayaranUser($data['user']['id_pengguna']);        
         $data['harga_kamar'] = $this->Pembayaran_model->getHargaKamarUser($data['user']['id_pengguna']);
         $data['waktu_pembayaran'] = $this->Pembayaran_model->getBulanTahunPembayaran();
 
@@ -135,12 +136,13 @@ class User extends CI_Controller {
     public function settingsProfil(){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $data['tittle'] = "Profil Saya";
         $data['menu'] = 'settings_profil';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         $this->load->view('partial/user_partial/header_user.php', $data);
@@ -158,7 +160,7 @@ class User extends CI_Controller {
     public function settingsPassword(){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Settings_model');
@@ -173,7 +175,7 @@ class User extends CI_Controller {
             
         $data['tittle'] = "Rubah Password";
         $data['menu'] = 'settings_password';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         if($this->form_validation->run() == false){
@@ -238,13 +240,13 @@ class User extends CI_Controller {
     public function buktiPembayaran($id){
         verifyAccess('user');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Laporan_model');
 
         $data['tittle'] = "Profil Saya";        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['pembayaran'] = $this->Laporan_model->getPembayaranById($id);
         $data['kost'] = $this->Laporan_model->getInfoKost();

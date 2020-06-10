@@ -2,7 +2,13 @@
 
 if ( ! function_exists('verifyAccess')){
     function verifyAccess($hak_akses){
-        $level = $_SESSION['id_akses'];
+        $level = null;
+
+        if (isset($_SESSION['id_akses'])) {
+            $level = $_SESSION['id_akses'];            
+        } else {
+            $level = $_POST['id_akses'];
+        }
 
         if (!$level) {
             redirect(base_url());

@@ -7,8 +7,7 @@ class Candidate extends CI_Controller {
     function __construct()
     {
         parent::__construct();        
-        $this->load->library('form_validation');
-        $this->load->model('Candidate_model');
+        $this->load->library('form_validation');        
         $this->load->model('User_model');
         $this->load->helper('auth_helper');
         verifyAccess('candidate');
@@ -21,12 +20,12 @@ class Candidate extends CI_Controller {
     public function index(){
         verifyAccess('candidate');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $data['tittle'] = "Dashboard";
         $data['menu'] = 'dashboard';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         $this->load->view('partial/candidate_partial/header_candidate.php', $data);
@@ -40,14 +39,14 @@ class Candidate extends CI_Controller {
     public function booking(){
         verifyAccess('candidate');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Booking_model');
 
         $data['tittle'] = "Booking Kamar";
         $data['menu'] = 'booking';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
         $data['booking'] = $this->Booking_model->getBookingByIdUser($data['user']['id_pengguna']);
         $data['pembayaran_booking'] = $this->Booking_model->getPembayaranBookingByUser($data['user']['id_pengguna']);
@@ -67,8 +66,8 @@ class Candidate extends CI_Controller {
     public function createBooking(){
         verifyAccess('candidate');
 
-        $email = $this->session->userdata('email');        
-        $user = $this->User_model->getUserByEmail($email);
+        $id_pengguna = $this->session->userdata('id_pengguna');        
+        $user = $this->User_model->getUserById($id_pengguna);
 
         $id_pengguna = $user['id_pengguna'];
         $id_kamar = $this->input->post('id_kamar', true);
@@ -103,12 +102,12 @@ class Candidate extends CI_Controller {
     public function settingsProfil(){
         verifyAccess('candidate');
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $data['tittle'] = "Profil";
         $data['menu'] = 'settings_profil';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         $this->load->view('partial/candidate_partial/header_candidate.php', $data);
@@ -125,7 +124,7 @@ class Candidate extends CI_Controller {
     public function settingsPassword(){
         verifyAccess('candidate');        
 
-        $email = $this->session->userdata('email');
+        $id_pengguna = $this->session->userdata('id_pengguna');
         $id_akses = $this->session->userdata('id_akses');
 
         $this->load->model('Settings_model');
@@ -140,7 +139,7 @@ class Candidate extends CI_Controller {
             
         $data['tittle'] = "Rubah Password";
         $data['menu'] = 'settings_password';        
-        $data['user'] = $this->User_model->getUserByEmail($email);
+        $data['user'] = $this->User_model->getUserById($id_pengguna);
         $data['level'] = $this->User_model->getHakAksesById($id_akses);
 
         if($this->form_validation->run() == false){
@@ -226,11 +225,11 @@ class Candidate extends CI_Controller {
             $this->load->view('candidate/ajax/get_kamar', $data);
         } else if ($ajax_menu == 'booking_kamar') {
             $id_kamar = $this->input->post('id_kamar');
-            $email = $this->session->userdata('email');
+            $id_pengguna = $this->session->userdata('id_pengguna');
 
             $this->load->model('Kamar_model');
 
-            $data['user'] = $this->User_model->getUserByEmail($email);
+            $data['user'] = $this->User_model->getUserById($id_pengguna);
             $data['kamar'] = $this->Kamar_model->getKamarById($id_kamar);
 
             $this->load->view('candidate/ajax/booking_kamar', $data);
