@@ -142,7 +142,7 @@ class Auth extends CI_Controller
 
     public function forgotPassword_post()
     {
-        if ($this->post('email') && $this->post('base_url')) {
+        if ($this->post('email')) {
             // jika ada email
             $email = $this->post('email');
 
